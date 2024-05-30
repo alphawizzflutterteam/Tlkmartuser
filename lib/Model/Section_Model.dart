@@ -8,7 +8,6 @@ class SectionModel {
       varientId,
       qty,
       productId,
-      sellerId,
       perItemTotal,
       perItemPrice,
       style,
@@ -30,7 +29,6 @@ class SectionModel {
         this.productId,
         this.perItemTotal,
         this.perItemPrice,
-        this.sellerId,
         this.style,
         this.totalItem,
         this.offset,
@@ -52,7 +50,6 @@ class SectionModel {
     List<String> selected = [];
     return SectionModel(
         id: parsedJson[ID],
-        sellerId:parsedJson['seller_id'] ,
         title: parsedJson[TITLE],
         mastercategoryid:parsedJson["master_category"],
         shortDesc: parsedJson[SHORT_DESC],
@@ -390,8 +387,8 @@ class Product_Varient {
         productId: json[PRODUCT_ID],
         attr_name: json[ATTR_NAME],
         varient_value: json[VARIENT_VALUE],
-        disPrice: json[DIS_PRICE].toString(),
-        price: json[PRICE].toString(),
+        disPrice: json[DIS_PRICE],
+        price: json[PRICE],
         availability: json[AVAILABILITY].toString(),
         cartCount: json[CART_COUNT],
         images: images);
@@ -400,7 +397,9 @@ class Product_Varient {
 
 class Attribute {
   String? id, value, name, sType, sValue;
+
   Attribute({this.id, this.value, this.name, this.sType, this.sValue});
+
   factory Attribute.fromJson(Map<String, dynamic> json) {
     return new Attribute(
         id: json[IDS],

@@ -9,7 +9,7 @@ final Uri updateUserApi = Uri.parse(baseUrl + 'update_user');
 final Uri getSectionApi = Uri.parse(baseUrl + 'get_sections');
 final Uri getSettingApi = Uri.parse(baseUrl + 'get_settings');
 final Uri getSubcatApi =
-    Uri.parse(baseUrl + 'get_subcategories_by_category_id');
+Uri.parse(baseUrl + 'get_subcategories_by_category_id');
 final Uri getProductApi = Uri.parse(baseUrl + 'get_products');
 final Uri manageCartApi = Uri.parse(baseUrl + 'manage_cart');
 final Uri getUserLoginApi = Uri.parse(baseUrl + 'login');
@@ -59,11 +59,12 @@ final Uri setBankProofApi = Uri.parse(baseUrl + 'send_bank_transfer_proof');
 final Uri checkDeliverableApi = Uri.parse(baseUrl + "is_product_delivarable");
 final Uri getDeleteAccountApi = Uri.parse(baseUrl + 'delete_user');
 final Uri checkCartDelApi =
-    Uri.parse(baseUrl + 'check_cart_products_delivarable');
+Uri.parse(baseUrl + 'check_cart_products_delivarable');
 final Uri masterTabsApi = Uri.parse(baseUrl + 'get_master_category');
 final Uri getBrandApi = Uri.parse(baseUrl + 'get_brands');
 final Uri getDealsApi = Uri.parse(baseUrl + 'get_deals');
-final Uri getRecentProduct = Uri.parse(baseUrl + 'recent_product');
+final Uri updateRecentProduct = Uri.parse(baseUrl + 'recent_product');
+final Uri convertWalletProduct = Uri.parse(baseUrl + 'convert_wallet');
 
 final String ISFIRSTTIME = 'isfirst$appName';
 final String HISTORYLIST = '$appName+historyList';

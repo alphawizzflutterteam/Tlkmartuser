@@ -5570,13 +5570,15 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
   String? overallAmount;
   Future<void> _getCart(String save) async {
     _isNetworkAvail = await isNetworkAvailable();
-
     if (_isNetworkAvail) {
       try {
-
-      int masterCategoryId = context.read<HomeProvider>().masterCategory;
-        var parameter = {USER_ID: CUR_USERID, SAVE_LATER: save,MASTER_TAB:masterCategoryId.toString()};
-        print(parameter.toString());
+        int masterCategoryId = context.read<HomeProvider>().masterCategory;
+        var parameter = {
+          USER_ID: CUR_USERID,
+          SAVE_LATER: save,
+          MASTER_TAB: masterCategoryId.toString()
+        };
+        print("parameter================> : $parameter");
         Response response =
             await post(getCartApi, body: parameter, headers: headers)
                 .timeout(Duration(seconds: timeOut));
@@ -5590,7 +5592,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           var data = getdata["data"];
           setState(() {
             print("Cart nEW================> : $totalamount");
-            totalamount = getdata['overall_amount'];
+            totalamount = getdata['overall_amount'].toString().replaceAll(',','');
             print("Cart aMOUBT================> : $totalamount");
             //sellerId = data[0]["product_details"][0]["seller_id"];
           });
@@ -5824,12 +5826,11 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     _isNetworkAvail = await isNetworkAvailable();
     if (_isNetworkAvail) {
       try {
-
         int masterCategoryId = context.read<HomeProvider>().masterCategory;
         var parameter = {
           USER_ID: CUR_USERID,
           SAVE_LATER: save,
-          MASTER_TAB:masterCategoryId
+          MASTER_TAB: masterCategoryId.toString()
         };
         print("this is ------->${parameter}");
         Response response =
@@ -5883,13 +5884,13 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           setSnackbar(
               "${getTranslated(context, 'MIN_MSG')}$qty", _checkscaffoldKey);
         }
- int masterCategoryId = context.read<HomeProvider>().masterCategory;
+        int masterCategoryId = context.read<HomeProvider>().masterCategory;
         var parameter = {
           PRODUCT_VARIENT_ID: cartList[index].varientId,
           USER_ID: CUR_USERID,
           QTY: qty,
           'seller_id': cartList[index].productList?[0].seller_id ?? '',
-          MASTER_TAB:masterCategoryId.toString()
+          MASTER_TAB: masterCategoryId.toString()
         };
         Response response =
             await post(manageCartApi, body: parameter, headers: headers)
@@ -5991,13 +5992,13 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
           setSnackbar(
               "${getTranslated(context, 'MIN_MSG')}$qty", _checkscaffoldKey);
         }
- int masterCategoryId = context.read<HomeProvider>().masterCategory;
+        int masterCategoryId = context.read<HomeProvider>().masterCategory;
         var parameter = {
           PRODUCT_VARIENT_ID: cartList[index].varientId,
           USER_ID: CUR_USERID,
           QTY: qty,
           'seller_id': cartList[index].productList?[0].seller_id ?? '',
-          MASTER_TAB:masterCategoryId.toString()
+          MASTER_TAB: masterCategoryId.toString()
         };
 
         Response response =
@@ -6079,14 +6080,13 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
     if (_isNetworkAvail) {
       try {
         context.read<CartProvider>().setProgress(true);
-         int masterCategoryId = context.read<HomeProvider>().masterCategory;
+        int masterCategoryId = context.read<HomeProvider>().masterCategory;
         var parameter = {
           PRODUCT_VARIENT_ID: id,
           USER_ID: CUR_USERID,
           QTY: qty,
           SAVE_LATER: save,
-          // 'seller_id': sellerId,
-          MASTER_TAB:masterCategoryId.toString()
+          MASTER_TAB: masterCategoryId.toString()
         };
 
         print("param****save***********$parameter");
@@ -6204,13 +6204,13 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                   _checkscaffoldKey);
             }
           }
-   int masterCategoryId = context.read<HomeProvider>().masterCategory;
+          int masterCategoryId = context.read<HomeProvider>().masterCategory;
           var parameter = {
             PRODUCT_VARIENT_ID: cartList[index].varientId,
             USER_ID: CUR_USERID,
             QTY: qty.toString(),
             'seller_id': cartList[index].productList?[0].seller_id ?? '',
-            MASTER_TAB:masterCategoryId.toString()
+            MASTER_TAB: masterCategoryId.toString()
           };
 
           Response response =
@@ -6334,7 +6334,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             varId = cartList[index].varientId!;
           }
           print("carient**********${cartList[index].varientId}");
-           int masterCategoryId = context.read<HomeProvider>().masterCategory;
+          int masterCategoryId = context.read<HomeProvider>().masterCategory;
           var parameter = {
             PRODUCT_VARIENT_ID: varId,
             USER_ID: CUR_USERID,
@@ -6342,7 +6342,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
             'seller_id': cartList[index].productList?[0].seller_id ?? '',
             MASTER_TAB: masterCategoryId.toString()
           };
-          print("parameter------------- $parameter");
+
           Response response =
               await post(manageCartApi, body: parameter, headers: headers)
                   .timeout(Duration(seconds: timeOut));
@@ -6508,162 +6508,164 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                             ))),
                   ),
                   Container(
-                    child: Column(mainAxisSize: MainAxisSize.min, children: <
-                        Widget>[
-                      promoList.length > 0 && oriPrice > 0
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: InkWell(
-                                child: Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    Container(
-                                        margin:
-                                            const EdgeInsetsDirectional.only(
-                                                end: 20),
-                                        decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .white,
-                                            borderRadius:
-                                                BorderRadiusDirectional
-                                                    .circular(10)),
-                                        child: TextField(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          promoList.length > 0 && oriPrice > 0
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: InkWell(
+                                    child: Stack(
+                                      alignment: Alignment.centerRight,
+                                      children: [
+                                        Container(
+                                            margin: const EdgeInsetsDirectional
+                                                .only(end: 20),
+                                            decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .white,
+                                                borderRadius:
+                                                    BorderRadiusDirectional
+                                                        .circular(10)),
+                                            child: TextField(
+                                              textDirection:
+                                                  Directionality.of(context),
+                                              enabled: false,
+                                              controller: promoC,
+                                              readOnly: true,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle2,
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                border: InputBorder.none,
+                                                //isDense: true,
+                                                hintText: getTranslated(context,
+                                                        'PROMOCODE_LBL') ??
+                                                    '',
+                                              ),
+                                            )),
+                                        Positioned.directional(
                                           textDirection:
                                               Directionality.of(context),
-                                          enabled: false,
-                                          controller: promoC,
-                                          readOnly: true,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                            border: InputBorder.none,
-                                            //isDense: true,
-                                            hintText: getTranslated(
-                                                    context, 'PROMOCODE_LBL') ??
-                                                '',
-                                          ),
-                                        )),
-                                    Positioned.directional(
-                                      textDirection: Directionality.of(context),
-                                      end: 0,
-                                      child: Container(
-                                          padding: EdgeInsets.all(11),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .lightBlack,
-                                          ),
-                                          child: Icon(
-                                            Icons.arrow_forward,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .white,
-                                          )),
-                                    ),
-                                  ],
-                                ),
-                                onTap: promoSheet,
-                              ),
-                            )
-                          : Container(),
-                      Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(10),
-                            ),
-                          ),
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                          padding:
-                              EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                          //  width: deviceWidth! * 0.9,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(getTranslated(context, 'TOTAL_PRICE')!),
-                                  Text(
-                                    CUR_CURRENCY! +
-                                        " ${oriPrice.toStringAsFixed(2)}",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1!
-                                        .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .fontColor),
-                                  ),
-                                ],
-                              ),
-                              isPromoValid!
-                                  ? Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          getTranslated(
-                                              context, 'PROMO_CODE_DIS_LBL')!,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption!
-                                              .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .lightBlack2),
+                                          end: 0,
+                                          child: Container(
+                                              padding: EdgeInsets.all(11),
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .lightBlack,
+                                              ),
+                                              child: Icon(
+                                                Icons.arrow_forward,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .white,
+                                              )),
                                         ),
-                                        Text(
-                                          CUR_CURRENCY! +
-                                              " " +
-                                              promoAmt.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption!
-                                              .copyWith(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .lightBlack2),
-                                        )
                                       ],
-                                    )
-                                  : Container(),
-                            ],
-                          )),
-                      SimBtn(
-                          size: 0.9,
-                          title: getTranslated(context, 'PROCEED_CHECKOUT'),
-                          onBtnSelected: () async {
-                            _getCart("");
-                            checkout(cartList);
-                            // if(isOnOff == true){
-                            //   if (oriPrice > 0) {
-                            //     FocusScope.of(context).unfocus();
-                            //     if (isAvailable) {
-                            //       checkout(cartList);
-                            //     } else {
-                            //       setSnackbar(
-                            //           getTranslated(
-                            //               context, 'CART_OUT_OF_STOCK_MSG')!,
-                            //           _scaffoldKey);
-                            //     }
-                            //     if (mounted) setState(() {});
-                            //   } else
-                            //     setSnackbar(getTranslated(context, 'ADD_ITEM')!,
-                            //         _scaffoldKey);
-                            // } else {
-                            //   showToast("Currently Store is Off");
-                            // }
-                          }),
-                    ]),
+                                    ),
+                                    onTap: promoSheet,
+                                  ),
+                                )
+                              : Container(),
+                          Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 8),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 5),
+                              //  width: deviceWidth! * 0.9,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(getTranslated(
+                                          context, 'TOTAL_PRICE')!),
+                                      Text(
+                                        CUR_CURRENCY! +
+                                            " ${oriPrice.toStringAsFixed(2)}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .fontColor),
+                                      ),
+                                    ],
+                                  ),
+                                  isPromoValid!
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              getTranslated(context,
+                                                  'PROMO_CODE_DIS_LBL')!,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .lightBlack2),
+                                            ),
+                                            Text(
+                                              CUR_CURRENCY! +
+                                                  " " +
+                                                  promoAmt.toString(),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .caption!
+                                                  .copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .lightBlack2),
+                                            )
+                                          ],
+                                        )
+                                      : Container(),
+                                ],
+                              )),
+                          SimBtn(
+                              size: 0.9,
+                              title: getTranslated(context, 'PROCEED_CHECKOUT'),
+                              onBtnSelected: () async {
+                                _getCart("");
+                                checkout(cartList);
+                                // if(isOnOff == true){
+                                //   if (oriPrice > 0) {
+                                //     FocusScope.of(context).unfocus();
+                                //     if (isAvailable) {
+                                //       checkout(cartList);
+                                //     } else {
+                                //       setSnackbar(
+                                //           getTranslated(
+                                //               context, 'CART_OUT_OF_STOCK_MSG')!,
+                                //           _scaffoldKey);
+                                //     }
+                                //     if (mounted) setState(() {});
+                                //   } else
+                                //     setSnackbar(getTranslated(context, 'ADD_ITEM')!,
+                                //         _scaffoldKey);
+                                // } else {
+                                //   showToast("Currently Store is Off");
+                                // }
+                              }),
+                        ]),
                   ),
                 ],
               );
@@ -6787,7 +6789,7 @@ class StateCart extends State<Cart> with TickerProviderStateMixin {
                                                   address(),
                                                   payment(),
                                                   cartItems(cartList),
-                                                  // promo(),
+                                                   // promo(),
                                                   orderSummary(cartList),
                                                 ],
                                               ),

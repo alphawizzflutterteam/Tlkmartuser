@@ -45,7 +45,7 @@ class _SaleState extends State<Sale>
 
   List<int> disList = [5, 10, 20, 30, 40, 50, 70, 80];
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  new GlobalKey<RefreshIndicatorState>();
   int curDis = 0;
   bool _loading = true;
   bool _productLoading = true;
@@ -80,32 +80,32 @@ class _SaleState extends State<Sale>
     return Scaffold(
         body: _isNetworkAvail
             ? RefreshIndicator(
-                color: colors.primary,
-                key: _refreshIndicatorKey,
-                onRefresh: _refresh,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          getTranslated(context, 'CHOOSE_DIS')!,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.fontColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
+            color: colors.primary,
+            key: _refreshIndicatorKey,
+            onRefresh: _refresh,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      getTranslated(context, 'CHOOSE_DIS')!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.fontColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                      discountRow(),
-                      // _catList(),
-                      // _slider(),
-                      _product(),
-                      _section(),
-                    ],
+                    ),
                   ),
-                ))
+                  discountRow(),
+                  // _catList(),
+                  // _slider(),
+                  _product(),
+                  _section(),
+                ],
+              ),
+            ))
             : noInternet(context));
   }
 
@@ -120,20 +120,20 @@ class _SaleState extends State<Sale>
   _singleSection(int index) {
     return saleList[index].productList!.length > 0
         ? Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _getHeading(saleList[index].title ?? "", index),
-                    _getSection(index),
-                  ],
-                ),
-              ),
+              _getHeading(saleList[index].title ?? "", index),
+              _getSection(index),
             ],
-          )
+          ),
+        ),
+      ],
+    )
         : Container();
   }
 
@@ -236,7 +236,7 @@ class _SaleState extends State<Sale>
             saleList[i].productList!.length < 6
                 ? saleList[i].productList!.length
                 : 6,
-            (index) {
+                (index) {
               return sectionItem(i, index, index % 2 == 0 ? true : false);
             },
           )),
@@ -247,14 +247,14 @@ class _SaleState extends State<Sale>
     if (productList.length > index) {
       String? offPer;
       double price =
-          double.parse(productList[index].prVarientList![0].disPrice!);
+      double.parse(productList[index].prVarientList![0].disPrice!);
       if (price == 0) {
         price = double.parse(productList[index].prVarientList![0].price!);
       } else {
         double off =
             double.parse(productList[index].prVarientList![0].price!) - price;
         offPer = ((off * 100) /
-                double.parse(productList[index].prVarientList![0].price!))
+            double.parse(productList[index].prVarientList![0].price!))
             .toStringAsFixed(2);
       }
 
@@ -304,42 +304,42 @@ class _SaleState extends State<Sale>
                 padding: const EdgeInsetsDirectional.only(
                     start: 5.0, bottom: 5, top: 3),
                 child: double.parse(
-                            productList[index].prVarientList![0].disPrice!) !=
-                        0
+                    productList[index].prVarientList![0].disPrice!) !=
+                    0
                     ? Row(
-                        children: <Widget>[
-                          Text(
-                            double.parse(productList[index]
-                                        .prVarientList![0]
-                                        .disPrice!) !=
-                                    0
-                                ? CUR_CURRENCY! +
-                                    "" +
-                                    productList[index].prVarientList![0].price!
-                                : "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .overline!
-                                .copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    letterSpacing: 0),
-                          ),
-                          Flexible(
-                            child: Text(" | " + "-$offPer%",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .overline!
-                                    .copyWith(
-                                        color: colors.primary,
-                                        letterSpacing: 0)),
-                          ),
-                        ],
-                      )
+                  children: <Widget>[
+                    Text(
+                      double.parse(productList[index]
+                          .prVarientList![0]
+                          .disPrice!) !=
+                          0
+                          ? CUR_CURRENCY! +
+                          "" +
+                          productList[index].prVarientList![0].price!
+                          : "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .overline!
+                          .copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          letterSpacing: 0),
+                    ),
+                    Flexible(
+                      child: Text(" | " + "-$offPer%",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline!
+                              .copyWith(
+                              color: colors.primary,
+                              letterSpacing: 0)),
+                    ),
+                  ],
+                )
                     : Container(
-                        height: 5,
-                      ),
+                  height: 5,
+                ),
               )
             ],
           ),
@@ -348,11 +348,11 @@ class _SaleState extends State<Sale>
             Navigator.push(
               context,
               PageRouteBuilder(
-                  // transitionDuration: Duration(milliseconds: 150),
+                // transitionDuration: Duration(milliseconds: 150),
                   pageBuilder: (_, __, ___) => ProductDetail(
                       model: model, secPos: 0, index: index, list: false
-                      //  title: sectionList[secPos].title,
-                      )),
+                    //  title: sectionList[secPos].title,
+                  )),
             );
           },
         ),
@@ -371,13 +371,13 @@ class _SaleState extends State<Sale>
             saleList[secPos].productList![index].prVarientList![0].price!);
       } else {
         double off = double.parse(
-                saleList[secPos].productList![index].prVarientList![0].price!) -
+            saleList[secPos].productList![index].prVarientList![0].price!) -
             price;
         offPer = ((off * 100) /
-                double.parse(saleList[secPos]
-                    .productList![index]
-                    .prVarientList![0]
-                    .price!))
+            double.parse(saleList[secPos]
+                .productList![index]
+                .prVarientList![0]
+                .price!))
             .toStringAsFixed(2);
       }
 
@@ -405,7 +405,7 @@ class _SaleState extends State<Sale>
                           child: Hero(
                             transitionOnUserGestures: true,
                             tag:
-                                "${saleList[secPos].productList![index].id}$secPos$index",
+                            "${saleList[secPos].productList![index].id}$secPos$index",
                             child: FadeInImage(
                               fit: BoxFit.contain,
                               fadeInDuration: Duration(milliseconds: 150),
@@ -431,48 +431,48 @@ class _SaleState extends State<Sale>
                 padding: const EdgeInsetsDirectional.only(
                     start: 5.0, bottom: 5, top: 3),
                 child: double.parse(saleList[secPos]
-                            .productList![index]
-                            .prVarientList![0]
-                            .disPrice!) !=
-                        0
+                    .productList![index]
+                    .prVarientList![0]
+                    .disPrice!) !=
+                    0
                     ? Row(
-                        children: <Widget>[
-                          Text(
-                            double.parse(saleList[secPos]
-                                        .productList![index]
-                                        .prVarientList![0]
-                                        .disPrice!) !=
-                                    0
-                                ? CUR_CURRENCY! +
-                                    "" +
-                                    saleList[secPos]
-                                        .productList![index]
-                                        .prVarientList![0]
-                                        .price!
-                                : "",
-                            style: Theme.of(context)
-                                .textTheme
-                                .overline!
-                                .copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                    letterSpacing: 0),
-                          ),
-                          Flexible(
-                            child: Text(" | " + "-$offPer%",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .overline!
-                                    .copyWith(
-                                        color: colors.primary,
-                                        letterSpacing: 0)),
-                          ),
-                        ],
-                      )
+                  children: <Widget>[
+                    Text(
+                      double.parse(saleList[secPos]
+                          .productList![index]
+                          .prVarientList![0]
+                          .disPrice!) !=
+                          0
+                          ? CUR_CURRENCY! +
+                          "" +
+                          saleList[secPos]
+                              .productList![index]
+                              .prVarientList![0]
+                              .price!
+                          : "",
+                      style: Theme.of(context)
+                          .textTheme
+                          .overline!
+                          .copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          letterSpacing: 0),
+                    ),
+                    Flexible(
+                      child: Text(" | " + "-$offPer%",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline!
+                              .copyWith(
+                              color: colors.primary,
+                              letterSpacing: 0)),
+                    ),
+                  ],
+                )
                     : Container(
-                        height: 5,
-                      ),
+                  height: 5,
+                ),
               )
             ],
           ),
@@ -481,11 +481,11 @@ class _SaleState extends State<Sale>
             Navigator.push(
               context,
               PageRouteBuilder(
-                  // transitionDuration: Duration(milliseconds: 150),
+                // transitionDuration: Duration(milliseconds: 150),
                   pageBuilder: (_, __, ___) => ProductDetail(
                       model: model, secPos: secPos, index: index, list: false
-                      //  title: sectionList[secPos].title,
-                      )),
+                    //  title: sectionList[secPos].title,
+                  )),
             );
           },
         ),
@@ -498,14 +498,14 @@ class _SaleState extends State<Sale>
     return _loading
         ? saleShimmer(6)
         : ListView.builder(
-            padding: EdgeInsets.all(0),
-            itemCount: saleList.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _singleSection(index);
-            },
-          );
+      padding: EdgeInsets.all(0),
+      itemCount: saleList.length,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return _singleSection(index);
+      },
+    );
   }
 
   saleShimmer(int length) {
@@ -524,7 +524,7 @@ class _SaleState extends State<Sale>
                 crossAxisSpacing: 10,
                 children: List.generate(
                   length,
-                  (index) {
+                      (index) {
                     return Container(
                       width: double.infinity,
                       height: double.infinity,
@@ -538,59 +538,59 @@ class _SaleState extends State<Sale>
     return _productLoading
         ? saleShimmer(4)
         : productList.length > 0
-            ? Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GridView.count(
-                        padding: EdgeInsetsDirectional.only(top: 5),
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        childAspectRatio: 1.2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: List.generate(
-                          productList.length < 4 ? productList.length : 4,
-                          (index) {
-                            return productItem(
-                                index, index % 2 == 0 ? true : false);
-                          },
-                        )),
+        ? Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GridView.count(
+              padding: EdgeInsetsDirectional.only(top: 5),
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              childAspectRatio: 1.2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              physics: NeverScrollableScrollPhysics(),
+              children: List.generate(
+                productList.length < 4 ? productList.length : 4,
+                    (index) {
+                  return productItem(
+                      index, index % 2 == 0 ? true : false);
+                },
+              )),
+        ),
+        Container(
+          color: Theme.of(context).colorScheme.white,
+          child: ListTile(
+            title: Text(
+              getTranslated(context, 'seeAll')!,
+              style: Theme.of(context)
+                  .textTheme
+                  .caption!
+                  .copyWith(color: colors.primary),
+            ),
+            trailing: Icon(
+              Icons.keyboard_arrow_right,
+              color: colors.primary,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductList(
+                    name: getTranslated(context, 'OFFER'),
+                    id: '',
+                    tag: false,
+                    dis: disList[curDis],
+                    fromSeller: false,
                   ),
-                  Container(
-                    color: Theme.of(context).colorScheme.white,
-                    child: ListTile(
-                      title: Text(
-                        getTranslated(context, 'seeAll')!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .caption!
-                            .copyWith(color: colors.primary),
-                      ),
-                      trailing: Icon(
-                        Icons.keyboard_arrow_right,
-                        color: colors.primary,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductList(
-                              name: getTranslated(context, 'OFFER'),
-                              id: '',
-                              tag: false,
-                              dis: disList[curDis],
-                              fromSeller: false,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              )
-            : Container();
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    )
+        : Container();
   }
 
   List<T> map<T>(List list, Function handler) {
@@ -605,7 +605,7 @@ class _SaleState extends State<Sale>
   Future<Null> callApi() async {
     UserProvider user = Provider.of<UserProvider>(context, listen: false);
     SettingProvider setting =
-        Provider.of<SettingProvider>(context, listen: false);
+    Provider.of<SettingProvider>(context, listen: false);
 
     user.setUserId(setting.userId);
 
@@ -626,11 +626,14 @@ class _SaleState extends State<Sale>
   }
 
   void getProduct(String top) {
+    int masterCategoryId = context.read<HomeProvider>().masterCategory;
     Map parameter = {
       LIMIT: perPage.toString(),
       OFFSET: "0", //offset.toString(),
       TOP_RETAED: top,
-      DISCOUNT: disList[curDis].toString()
+      DISCOUNT: disList[curDis].toString(),
+      MASTER_TAB: masterCategoryId.toString(),
+      "recent": '1'
     };
 
     if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
@@ -695,10 +698,12 @@ class _SaleState extends State<Sale>
 
   void getSection() {
     print("Disc: ${disList[curDis].toString()}");
+    int masterCategoryId = context.read<HomeProvider>().masterCategory;
     Map parameter = {
       PRODUCT_LIMIT: "6",
       PRODUCT_OFFSET: "0",
-      DISCOUNT: disList[curDis].toString()
+      DISCOUNT: disList[curDis].toString(),
+      MASTER_TAB: masterCategoryId.toString()
     };
 
     if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
@@ -735,54 +740,54 @@ class _SaleState extends State<Sale>
   updateDailog() async {
     await dialogAnimate(context,
         StatefulBuilder(builder: (BuildContext context, StateSetter setStater) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0))),
-        title: Text(getTranslated(context, 'UPDATE_APP')!),
-        content: Text(
-          getTranslated(context, 'UPDATE_AVAIL')!,
-          style: Theme.of(this.context)
-              .textTheme
-              .subtitle1!
-              .copyWith(color: Theme.of(context).colorScheme.fontColor),
-        ),
-        actions: <Widget>[
-          new TextButton(
-              child: Text(
-                getTranslated(context, 'NO')!,
-                style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
-                    color: Theme.of(context).colorScheme.lightBlack,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              }),
-          new TextButton(
-              child: Text(
-                getTranslated(context, 'YES')!,
-                style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
-                    color: Theme.of(context).colorScheme.fontColor,
-                    fontWeight: FontWeight.bold),
-              ),
-              onPressed: () async {
-                Navigator.of(context).pop(false);
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            title: Text(getTranslated(context, 'UPDATE_APP')!),
+            content: Text(
+              getTranslated(context, 'UPDATE_AVAIL')!,
+              style: Theme.of(this.context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(color: Theme.of(context).colorScheme.fontColor),
+            ),
+            actions: <Widget>[
+              new TextButton(
+                  child: Text(
+                    getTranslated(context, 'NO')!,
+                    style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
+                        color: Theme.of(context).colorScheme.lightBlack,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  }),
+              new TextButton(
+                  child: Text(
+                    getTranslated(context, 'YES')!,
+                    style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
+                        color: Theme.of(context).colorScheme.fontColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () async {
+                    Navigator.of(context).pop(false);
 
-                String _url = '';
-                if (Platform.isAndroid) {
-                  _url = androidLink + packageName;
-                } else if (Platform.isIOS) {
-                  _url = iosLink;
-                }
+                    String _url = '';
+                    if (Platform.isAndroid) {
+                      _url = androidLink + packageName;
+                    } else if (Platform.isIOS) {
+                      _url = iosLink;
+                    }
 
-                if (await canLaunch(_url)) {
-                  await launch(_url);
-                } else {
-                  throw 'Could not launch $_url';
-                }
-              })
-        ],
-      );
-    }));
+                    if (await canLaunch(_url)) {
+                      await launch(_url);
+                    } else {
+                      throw 'Could not launch $_url';
+                    }
+                  })
+            ],
+          );
+        }));
   }
 
   Widget homeShimmer() {
@@ -793,12 +798,12 @@ class _SaleState extends State<Sale>
         highlightColor: Theme.of(context).colorScheme.simmerHigh,
         child: SingleChildScrollView(
             child: Column(
-          children: [
-            catLoading(),
-            sliderLoading(),
-            sectionLoading(),
-          ],
-        )),
+              children: [
+                catLoading(),
+                sliderLoading(),
+                sectionLoading(),
+              ],
+            )),
       ),
     );
   }
@@ -839,14 +844,14 @@ class _SaleState extends State<Sale>
             child: Row(
                 children: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                     .map((_) => Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.white,
-                            shape: BoxShape.circle,
-                          ),
-                          width: 50.0,
-                          height: 50.0,
-                        ))
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.white,
+                    shape: BoxShape.circle,
+                  ),
+                  width: 50.0,
+                  height: 50.0,
+                ))
                     .toList()),
           ),
         ),
@@ -912,7 +917,7 @@ class _SaleState extends State<Sale>
                     ? getTranslated(context, 'SELOC')!
                     : getTranslated(context, 'DELIVERTO')! + data,
                 style:
-                    TextStyle(color: Theme.of(context).colorScheme.fontColor),
+                TextStyle(color: Theme.of(context).colorScheme.fontColor),
               );
             },
             selector: (_, provider) => provider.curPincode,
@@ -934,103 +939,103 @@ class _SaleState extends State<Sale>
         builder: (builder) {
           return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: ListView(shrinkWrap: true, children: [
-                Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20, bottom: 40, top: 30),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: Form(
-                          key: _formkey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Icon(Icons.close),
-                                ),
-                              ),
-                              TextFormField(
-                                keyboardType: TextInputType.text,
-                                textCapitalization: TextCapitalization.words,
-                                validator: (val) => validatePincode(val!,
-                                    getTranslated(context, 'PIN_REQUIRED')),
-                                onSaved: (String? value) {
-                                  context
-                                      .read<UserProvider>()
-                                      .setPincode(value!);
-                                },
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2!
-                                    .copyWith(
+                return Container(
+                  constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.9),
+                  child: ListView(shrinkWrap: true, children: [
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20, bottom: 40, top: 30),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: Form(
+                              key: _formkey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Icon(Icons.close),
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.text,
+                                    textCapitalization: TextCapitalization.words,
+                                    validator: (val) => validatePincode(val!,
+                                        getTranslated(context, 'PIN_REQUIRED')),
+                                    onSaved: (String? value) {
+                                      context
+                                          .read<UserProvider>()
+                                          .setPincode(value!);
+                                    },
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2!
+                                        .copyWith(
                                         color: Theme.of(context)
                                             .colorScheme
                                             .fontColor),
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  prefixIcon: Icon(Icons.location_on),
-                                  hintText:
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      prefixIcon: Icon(Icons.location_on),
+                                      hintText:
                                       getTranslated(context, 'PINCODEHINT_LBL'),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin:
-                                          EdgeInsetsDirectional.only(start: 20),
-                                      width: deviceWidth! * 0.35,
-                                      child: OutlinedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<UserProvider>()
-                                              .setPincode('');
-
-                                          context
-                                              .read<HomeProvider>()
-                                              .setSecLoading(true);
-                                          getSection();
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                            getTranslated(context, 'All')!),
-                                      ),
                                     ),
-                                    Spacer(),
-                                    SimBtn(
-                                        size: 0.35,
-                                        title: getTranslated(context, 'APPLY'),
-                                        onBtnSelected: () async {
-                                          if (validateAndSave()) {
-                                            // validatePin(curPin);
-                                            context
-                                                .read<HomeProvider>()
-                                                .setSecLoading(true);
-                                            getSection();
-                                            Navigator.pop(context);
-                                          }
-                                        }),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ))
-              ]),
-            );
-            //});
-          });
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          margin:
+                                          EdgeInsetsDirectional.only(start: 20),
+                                          width: deviceWidth! * 0.35,
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<UserProvider>()
+                                                  .setPincode('');
+
+                                              context
+                                                  .read<HomeProvider>()
+                                                  .setSecLoading(true);
+                                              getSection();
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text(
+                                                getTranslated(context, 'All')!),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        SimBtn(
+                                            size: 0.35,
+                                            title: getTranslated(context, 'APPLY'),
+                                            onBtnSelected: () async {
+                                              if (validateAndSave()) {
+                                                // validatePin(curPin);
+                                                context
+                                                    .read<HomeProvider>()
+                                                    .setSecLoading(true);
+                                                getSection();
+                                                Navigator.pop(context);
+                                              }
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ))
+                  ]),
+                );
+                //});
+              });
         });
   }
 
@@ -1054,60 +1059,60 @@ class _SaleState extends State<Sale>
     return Column(
         children: [0, 1, 2, 3, 4]
             .map((_) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Container(
-                                margin: EdgeInsets.only(bottom: 40),
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.white,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20)))),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 5),
-                                width: double.infinity,
-                                height: 18.0,
-                                color: Theme.of(context).colorScheme.white,
-                              ),
-                              GridView.count(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  crossAxisCount: 2,
-                                  shrinkWrap: true,
-                                  childAspectRatio: 1.0,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  mainAxisSpacing: 5,
-                                  crossAxisSpacing: 5,
-                                  children: List.generate(
-                                    4,
-                                    (index) {
-                                      return Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        color:
-                                            Theme.of(context).colorScheme.white,
-                                      );
-                                    },
-                                  )),
-                            ],
-                          ),
-                        ],
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                        margin: EdgeInsets.only(bottom: 40),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.white,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20)))),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        width: double.infinity,
+                        height: 18.0,
+                        color: Theme.of(context).colorScheme.white,
                       ),
-                    ),
-                    sliderLoading()
-                    //offerImages.length > index ? _getOfferImage(index) : Container(),
-                  ],
-                ))
+                      GridView.count(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          childAspectRatio: 1.0,
+                          physics: NeverScrollableScrollPhysics(),
+                          mainAxisSpacing: 5,
+                          crossAxisSpacing: 5,
+                          children: List.generate(
+                            4,
+                                (index) {
+                              return Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                color:
+                                Theme.of(context).colorScheme.white,
+                              );
+                            },
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            sliderLoading()
+            //offerImages.length > index ? _getOfferImage(index) : Container(),
+          ],
+        ))
             .toList());
   }
 
@@ -1127,9 +1132,9 @@ class _SaleState extends State<Sale>
                   children: [
                     curDis == index
                         ? SvgPicture.asset(
-                            imagePath + 'tap.svg',
-                            color: colors.primary,
-                          )
+                      imagePath + 'tap.svg',
+                      color: colors.primary,
+                    )
                         : Container(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),

@@ -2207,9 +2207,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:provider/provider.dart';
 import 'package:tlkmartuser/Helper/Session.dart';
 import 'package:tlkmartuser/Model/Order_Model.dart';
+import 'package:tlkmartuser/Provider/HomeProvider.dart';
 import 'package:tlkmartuser/Screen/Dashboard.dart';
 import 'package:tlkmartuser/Screen/Seller_Details.dart';
 import 'package:file_picker/file_picker.dart';
@@ -2255,7 +2259,7 @@ class OrderDetail extends StatefulWidget {
 class StateOrder extends State<OrderDetail>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
+  GlobalKey<ScaffoldMessengerState>();
   ScrollController controller = ScrollController();
   Animation? buttonSqueezeanimation;
   AnimationController? buttonController;
@@ -2427,73 +2431,73 @@ class StateOrder extends State<OrderDetail>
       },
       child: Scaffold(
         appBar:
-            getSimpleAppBar(getTranslated(context, "ORDER_DETAIL")!, context),
+        getSimpleAppBar(getTranslated(context, "ORDER_DETAIL")!, context),
         body: _isNetworkAvail
             ? Stack(
-                children: [
-                  Column(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: getSubHeadingsTabBar(),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: getSubHeadingsTabBar(),
-                      ),
-                      Expanded(
-                        child: TabBarView(
-                          controller: _tabController,
-                          children: [
-                            getOrderDetails(model),
-                            SingleChildScrollView(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: getSingleProduct(model, PROCESSED),
-                              ),
-                            ),
-                            SingleChildScrollView(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: getSingleProduct(model, DELIVERD),
-                              ),
-                            ),
-                            SingleChildScrollView(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: getSingleProduct(model, CANCLED),
-                              ),
-                            ),
-                            SingleChildScrollView(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: getSingleProduct(model, RETURNED),
-                              ),
-                            ),
-                          ],
+                      getOrderDetails(model),
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: getSingleProduct(model, PROCESSED),
                         ),
                       ),
-                      // Expanded(
-                      //   child: getOrderDetails(model),
-                      // ),
-                      // (!widget.model!.itemList![0].listStatus!
-                      //             .contains(DELIVERD) &&
-                      //         (!widget.model!.itemList![0].listStatus!
-                      //             .contains(RETURNED)) &&
-                      //         _isCancleable &&
-                      //         widget.model!.itemList![0].isAlrCancelled == "0")
-                      //     ? cancelable()
-                      //     : (widget.model!.itemList![0].listStatus!
-                      //                 .contains(DELIVERD) &&
-                      //             _isReturnable &&
-                      //             widget.model!.itemList![0].isAlrReturned == "0")
-                      //         ? returnable()
-                      //         : Container(),
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: getSingleProduct(model, DELIVERD),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: getSingleProduct(model, CANCLED),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: getSingleProduct(model, RETURNED),
+                        ),
+                      ),
                     ],
                   ),
-                  showCircularProgress(_isProgress, colors.primary),
-                ],
-              )
+                ),
+                // Expanded(
+                //   child: getOrderDetails(model),
+                // ),
+                // (!widget.model!.itemList![0].listStatus!
+                //             .contains(DELIVERD) &&
+                //         (!widget.model!.itemList![0].listStatus!
+                //             .contains(RETURNED)) &&
+                //         _isCancleable &&
+                //         widget.model!.itemList![0].isAlrCancelled == "0")
+                //     ? cancelable()
+                //     : (widget.model!.itemList![0].listStatus!
+                //                 .contains(DELIVERD) &&
+                //             _isReturnable &&
+                //             widget.model!.itemList![0].isAlrReturned == "0")
+                //         ? returnable()
+                //         : Container(),
+              ],
+            ),
+            showCircularProgress(_isProgress, colors.primary),
+          ],
+        )
             : noInternet(context),
       ),
     );
@@ -2574,7 +2578,7 @@ class StateOrder extends State<OrderDetail>
         child: Padding(
             padding: EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding: EdgeInsetsDirectional.only(start: 15.0, end: 15.0),
                   child: Text(getTranslated(context, 'PRICE_DETAIL')!,
@@ -2701,7 +2705,7 @@ class StateOrder extends State<OrderDetail>
         child: Padding(
             padding: EdgeInsets.fromLTRB(0, 15.0, 0, 15.0),
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding: EdgeInsetsDirectional.only(start: 15.0, end: 15.0),
                   child: Text(getTranslated(context, 'SHIPPING_DETAIL')!,
@@ -2793,49 +2797,49 @@ class StateOrder extends State<OrderDetail>
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .lightBlack,
-                                      fontWeight: FontWeight.normal),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .lightBlack,
+                                  fontWeight: FontWeight.normal),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             orderItem.attr_name!.isNotEmpty
                                 ? ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: att.length,
-                                    itemBuilder: (context, index) {
-                                      return Row(children: [
-                                        Flexible(
-                                          child: Text(
-                                            att[index].trim() + ":",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .lightBlack2),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsetsDirectional.only(
-                                              start: 5.0),
-                                          child: Text(
-                                            val[index],
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .lightBlack),
-                                          ),
-                                        )
-                                      ]);
-                                    })
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: att.length,
+                                itemBuilder: (context, index) {
+                                  return Row(children: [
+                                    Flexible(
+                                      child: Text(
+                                        att[index].trim() + ":",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2!
+                                            .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .lightBlack2),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.only(
+                                          start: 5.0),
+                                      child: Text(
+                                        val[index],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2!
+                                            .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .lightBlack),
+                                      ),
+                                    )
+                                  ]);
+                                })
                                 : Container(),
 
                             Row(children: [
@@ -2845,9 +2849,9 @@ class StateOrder extends State<OrderDetail>
                                     .textTheme
                                     .subtitle2!
                                     .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .lightBlack2),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .lightBlack2),
                               ),
                               Padding(
                                 padding: EdgeInsetsDirectional.only(start: 5.0),
@@ -2857,9 +2861,9 @@ class StateOrder extends State<OrderDetail>
                                       .textTheme
                                       .subtitle2!
                                       .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .lightBlack),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .lightBlack),
                                 ),
                               )
                             ]),
@@ -2869,9 +2873,9 @@ class StateOrder extends State<OrderDetail>
                                   .textTheme
                                   .subtitle1!
                                   .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .fontColor),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .fontColor),
                             ),
                             //  Text(orderItem.status)
                           ],
@@ -2928,23 +2932,23 @@ class StateOrder extends State<OrderDetail>
                           ),
                           orderItem.courier_agency! != ""
                               ? Text(
-                                  "${getTranslated(context, 'COURIER_AGENCY')!}: ",
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .lightBlack,
-                                      fontWeight: FontWeight.bold),
-                                )
+                            "${getTranslated(context, 'COURIER_AGENCY')!}: ",
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .lightBlack,
+                                fontWeight: FontWeight.bold),
+                          )
                               : Container(),
                           orderItem.tracking_id! != ""
                               ? Text(
-                                  "${getTranslated(context, 'TRACKING_ID')!}: ",
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .lightBlack,
-                                      fontWeight: FontWeight.bold),
-                                )
+                            "${getTranslated(context, 'TRACKING_ID')!}: ",
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .lightBlack,
+                                fontWeight: FontWeight.bold),
+                          )
                               : Container(),
                         ],
                       ),
@@ -2958,19 +2962,19 @@ class StateOrder extends State<OrderDetail>
                               "${orderItem.store_name}",
                               style: TextStyle(
                                   color:
-                                      Theme.of(context).colorScheme.lightBlack2,
+                                  Theme.of(context).colorScheme.lightBlack2,
                                   decoration: TextDecoration.underline),
                             ),
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => SellerProfile(
-                                        sellerStoreName: orderItem.store_name,
-                                        sellerRating: orderItem.seller_rating,
-                                        sellerImage: orderItem.seller_profile,
-                                        sellerName: orderItem.seller_name,
-                                        sellerID: orderItem.seller_id,
-                                        storeDesc: orderItem.store_description,
-                                      )));
+                                    sellerStoreName: orderItem.store_name,
+                                    sellerRating: orderItem.seller_rating,
+                                    sellerImage: orderItem.seller_profile,
+                                    sellerName: orderItem.seller_name,
+                                    sellerID: orderItem.seller_id,
+                                    storeDesc: orderItem.store_description,
+                                  )));
                             },
                           ),
                           Text(
@@ -2987,117 +2991,118 @@ class StateOrder extends State<OrderDetail>
                           ),
                           orderItem.courier_agency! != ""
                               ? Text(
-                                  "${orderItem.courier_agency!}",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .lightBlack2,
-                                  ),
-                                )
+                            "${orderItem.courier_agency!}",
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .lightBlack2,
+                            ),
+                          )
                               : Container(),
                           orderItem.tracking_id! != ""
                               ? RichText(
-                                  text: TextSpan(children: [
-                                  TextSpan(
-                                    text: "",
-                                    style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .lightBlack,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                      text: "${orderItem.courier_agency!}",
-                                      style: const TextStyle(
-                                          color: colors.primary,
-                                          decoration: TextDecoration.underline),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () async {
-                                          var url = "${orderItem.tracking_url}";
+                              text: TextSpan(children: [
+                                TextSpan(
+                                  text: "",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .lightBlack,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                    text: "${orderItem.courier_agency!}",
+                                    style: const TextStyle(
+                                        color: colors.primary,
+                                        decoration: TextDecoration.underline),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        var url = "${orderItem.tracking_url}";
 
-                                          if (await canLaunch(url)) {
-                                            await launch(url);
-                                          } else {
-                                            setSnackbar(getTranslated(
-                                                context, 'URL_ERROR')!);
-                                          }
-                                        })
-                                ]))
+                                        if (await canLaunch(url)) {
+                                          await launch(url);
+                                        } else {
+                                          setSnackbar(getTranslated(
+                                              context, 'URL_ERROR')!);
+                                        }
+                                      })
+                              ]))
                               : Container(),
                         ],
                       ),
                     ),
                     orderItem.status == DELIVERD
                         ? Expanded(
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                            getTranslated(
-                                                context, 'ARE_YOU_SURE?')!,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .fontColor),
-                                          ),
-                                          content: Text(
-                                            "${getTranslated(context, "Would_you_like_to_repeat_this_order")}?",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .fontColor),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              child: Text(
-                                                getTranslated(context, 'YES')!,
-                                                style: TextStyle(
-                                                    color: colors.primary),
-                                              ),
-                                              onPressed: () {
-                                                addToCart(
-                                                    orderItem.varientId
-                                                        .toString(),
-                                                    orderItem.seller_id ?? '');
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text(
-                                                getTranslated(context, 'NO')!,
-                                                style: TextStyle(
-                                                    color: colors.primary),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(3),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      getTranslated(
+                                          context, 'ARE_YOU_SURE?')!,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .fontColor),
                                     ),
-                                    height: 36,
-                                    child: Center(
-                                      child: Text(
-                                        '${getTranslated(context, "REOEATORDER")}',
-                                        style: TextStyle(fontSize: 13, color: Colors.red),
+                                    content: Text(
+                                      "${getTranslated(context, "Would_you_like_to_repeat_this_order")}?",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .fontColor),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: Text(
+                                          getTranslated(context, 'YES')!,
+                                          style: TextStyle(
+                                              color: colors.primary),
+                                        ),
+                                        onPressed: () {
+                                          addToCart(
+                                              orderItem.varientId
+                                                  .toString(),
+                                              orderItem.seller_id ?? '');
+                                        },
                                       ),
-                                    ),
-                                  ),
+                                      TextButton(
+                                        child: Text(
+                                          getTranslated(context, 'NO')!,
+                                          style: TextStyle(
+                                              color: colors.primary),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black12),
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                              height: 36,
+                              child: Center(
+                                child: Text(
+                                  '${getTranslated(context, "REOEATORDER")}',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.red),
                                 ),
-                              ],
+                              ),
                             ),
-                          )
+                          ),
+                        ],
+                      ),
+                    )
                         : SizedBox.shrink(),
                   ],
                 ),
@@ -3137,46 +3142,46 @@ class StateOrder extends State<OrderDetail>
                     children: [
                       Expanded(
                           child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: files.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, i) {
-                          return InkWell(
-                            child: Stack(
-                              alignment: AlignmentDirectional.topEnd,
-                              children: [
-                                Image.file(
-                                  files[i],
-                                  width: 180,
-                                  height: 180,
-                                ),
-                                Container(
-                                    color:
+                            shrinkWrap: true,
+                            itemCount: files.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, i) {
+                              return InkWell(
+                                child: Stack(
+                                  alignment: AlignmentDirectional.topEnd,
+                                  children: [
+                                    Image.file(
+                                      files[i],
+                                      width: 180,
+                                      height: 180,
+                                    ),
+                                    Container(
+                                        color:
                                         Theme.of(context).colorScheme.black26,
-                                    child: Icon(
-                                      Icons.clear,
-                                      size: 15,
-                                    ))
-                              ],
-                            ),
-                            onTap: () {
-                              if (mounted) {
-                                setState(() {
-                                  files.removeAt(i);
-                                });
-                              }
+                                        child: Icon(
+                                          Icons.clear,
+                                          size: 15,
+                                        ))
+                                  ],
+                                ),
+                                onTap: () {
+                                  if (mounted) {
+                                    setState(() {
+                                      files.removeAt(i);
+                                    });
+                                  }
+                                },
+                              );
                             },
-                          );
-                        },
-                      )),
+                          )),
                       InkWell(
                         child: Container(
                           padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                           decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.lightWhite,
                               borderRadius:
-                                  BorderRadius.all(const Radius.circular(4.0))),
+                              BorderRadius.all(const Radius.circular(4.0))),
                           child: Text(
                             getTranslated(context, 'SUBMIT_LBL')!,
                             style: TextStyle(
@@ -3196,21 +3201,19 @@ class StateOrder extends State<OrderDetail>
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (orderItem.status == DELIVERD)
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            openBottomSheet(context, orderItem.productId);
-                          },
-                          icon: Icon(Icons.rate_review_outlined,
-                              color: colors.primary),
-                          label: Text(
-                            getTranslated(context, "WRITE_REVIEW_LBL")!,
-                            style: TextStyle(color: colors.primary),
-                          ),
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(
-                                color: Theme.of(context).colorScheme.btnColor),
-                          ),
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          openBottomSheet(context, orderItem.productId);
+                        },
+                        icon: Icon(Icons.rate_review_outlined,
+                            color: colors.primary),
+                        label: Text(
+                          getTranslated(context, "WRITE_REVIEW_LBL")!,
+                          style: TextStyle(color: colors.primary),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                              color: Theme.of(context).colorScheme.btnColor),
                         ),
                       ),
 
@@ -3223,149 +3226,149 @@ class StateOrder extends State<OrderDetail>
                     orderItem.status == CANCLED
                         ? SizedBox.shrink()
                         : Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: OutlinedButton(
-                                  onPressed: _isReturnClick
-                                      ? () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                  getTranslated(context,
-                                                      'ARE_YOU_SURE?')!,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .fontColor),
-                                                ),
-                                                content: Text(
-                                                  "Would you like to cancel this order?",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .fontColor),
-                                                ),
-                                                actions: [
-                                                  TextButton(
-                                                    child: Text(
-                                                      getTranslated(
-                                                          context, 'YES')!,
-                                                      style: TextStyle(
-                                                          color:
-                                                              colors.primary),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                      setState(() {
-                                                        _isReturnClick = false;
-                                                        _isProgress = true;
-                                                      });
-                                                      cancelOrder(
-                                                          CANCLED,
-                                                          updateOrderItemApi,
-                                                          orderItem.id);
-                                                    },
-                                                  ),
-                                                  TextButton(
-                                                    child: Text(
-                                                      getTranslated(
-                                                          context, 'NO')!,
-                                                      style: TextStyle(
-                                                          color:
-                                                              colors.primary),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  )
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        }
-                                      : null,
-                                  child: Text(
-                                      getTranslated(context, 'ITEM_CANCEL')!),
-                                )),
-                          ),
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: OutlinedButton(
+                            onPressed: _isReturnClick
+                                ? () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      getTranslated(context,
+                                          'ARE_YOU_SURE?')!,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .fontColor),
+                                    ),
+                                    content: Text(
+                                      "Would you like to cancel this order?",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .fontColor),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: Text(
+                                          getTranslated(
+                                              context, 'YES')!,
+                                          style: TextStyle(
+                                              color:
+                                              colors.primary),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          setState(() {
+                                            _isReturnClick = false;
+                                            _isProgress = true;
+                                          });
+                                          cancelOrder(
+                                              CANCLED,
+                                              updateOrderItemApi,
+                                              orderItem.id);
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text(
+                                          getTranslated(
+                                              context, 'NO')!,
+                                          style: TextStyle(
+                                              color:
+                                              colors.primary),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                                : null,
+                            child: Text(
+                                getTranslated(context, 'ITEM_CANCEL')!),
+                          )),
+                    ),
                     // else
                     //   (orderItem.listStatus!.contains(DELIVERD) &&
                     //           orderItem.isReturn == "1" &&
                     //           orderItem.isAlrReturned == "0")
                     //       ?
-                    orderItem.status == CANCLED
-                        ? SizedBox.shrink()
-                        : Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: OutlinedButton(
-                              onPressed: _isReturnClick
-                                  ? () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                              getTranslated(
-                                                  context, 'ARE_YOU_SURE?')!,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .fontColor),
-                                            ),
-                                            content: Text(
-                                              "Would you like to return this product?",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .fontColor),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                child: Text(
-                                                  getTranslated(
-                                                      context, 'YES')!,
-                                                  style: TextStyle(
-                                                      color: colors.primary),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  setState(() {
-                                                    _isReturnClick = false;
-                                                    _isProgress = true;
-                                                  });
-                                                  cancelOrder(
-                                                      RETURNED,
-                                                      updateOrderItemApi,
-                                                      orderItem.id);
-                                                },
-                                              ),
-                                              TextButton(
-                                                child: Text(
-                                                  getTranslated(context, 'NO')!,
-                                                  style: TextStyle(
-                                                      color: colors.primary),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  : null,
-                              child:
-                                  Text(getTranslated(context, 'ITEM_RETURN')!),
-                            ),
-                          )
+
                     // : Container(),
                   ],
                 ),
-
+                orderItem.status == CANCLED
+                    ? SizedBox.shrink()
+                    : Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: OutlinedButton(
+                    onPressed: _isReturnClick
+                        ? () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              getTranslated(
+                                  context, 'ARE_YOU_SURE?')!,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .fontColor),
+                            ),
+                            content: Text(
+                              "Would you like to return this product?",
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .fontColor),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text(
+                                  getTranslated(
+                                      context, 'YES')!,
+                                  style: TextStyle(
+                                      color: colors.primary),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    _isReturnClick = false;
+                                    _isProgress = true;
+                                  });
+                                  cancelOrder(
+                                      RETURNED,
+                                      updateOrderItemApi,
+                                      orderItem.id);
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  getTranslated(context, 'NO')!,
+                                  style: TextStyle(
+                                      color: colors.primary),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    }
+                        : null,
+                    child:
+                    Text(getTranslated(context, 'ITEM_RETURN')!),
+                  ),
+                )
 //                 SizedBox(height: 10,),
 //                 orderItem.status==SHIPED?
 //                 InkWell(
@@ -3498,292 +3501,292 @@ class StateOrder extends State<OrderDetail>
   getProcessed(String? prDate, String? cDate) {
     return cDate == null
         ? Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+                height: 30,
+                child: VerticalDivider(
+                  thickness: 2,
+                  color: prDate == null ? Colors.grey : colors.primary,
+                )),
+            Icon(
+              Icons.circle,
+              color: prDate == null ? Colors.grey : colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsetsDirectional.only(start: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                      height: 30,
-                      child: VerticalDivider(
-                        thickness: 2,
-                        color: prDate == null ? Colors.grey : colors.primary,
-                      )),
-                  Icon(
-                    Icons.circle,
-                    color: prDate == null ? Colors.grey : colors.primary,
-                    size: 15,
-                  ),
-                ],
+              Text(
+                getTranslated(context, 'ORDER_PROCESSED')!,
+                style: TextStyle(fontSize: 8),
               ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(start: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getTranslated(context, 'ORDER_PROCESSED')!,
-                      style: TextStyle(fontSize: 8),
-                    ),
-                    Text(
-                      prDate ?? " ",
-                      style: TextStyle(fontSize: 8),
-                    ),
-                  ],
-                ),
+              Text(
+                prDate ?? " ",
+                style: TextStyle(fontSize: 8),
               ),
             ],
-          )
+          ),
+        ),
+      ],
+    )
         : prDate == null
-            ? Container()
-            : Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 30,
-                        child: VerticalDivider(
-                          thickness: 2,
-                          color: colors.primary,
-                        ),
-                      ),
-                      Icon(
-                        Icons.circle,
-                        color: colors.primary,
-                        size: 15,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsetsDirectional.only(start: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          getTranslated(context, 'ORDER_PROCESSED')!,
-                          style: TextStyle(fontSize: 8),
-                        ),
-                        Text(
-                          prDate,
-                          style: TextStyle(fontSize: 8),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
+        ? Container()
+        : Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: 30,
+              child: VerticalDivider(
+                thickness: 2,
+                color: colors.primary,
+              ),
+            ),
+            Icon(
+              Icons.circle,
+              color: colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsetsDirectional.only(start: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                getTranslated(context, 'ORDER_PROCESSED')!,
+                style: TextStyle(fontSize: 8),
+              ),
+              Text(
+                prDate,
+                style: TextStyle(fontSize: 8),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   getShipped(String? sDate, String? cDate) {
     return cDate == null
         ? Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 30,
-                    child: VerticalDivider(
-                      thickness: 2,
-                      color: sDate == null ? Colors.grey : colors.primary,
-                    ),
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: sDate == null ? Colors.grey : colors.primary,
-                    size: 15,
-                  ),
-                ],
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 30,
+              child: VerticalDivider(
+                thickness: 2,
+                color: sDate == null ? Colors.grey : colors.primary,
               ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(start: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getTranslated(context, 'ORDER_SHIPPED')!,
-                      style: TextStyle(fontSize: 8),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      sDate ?? " ",
-                      style: TextStyle(fontSize: 8),
-                    ),
-                  ],
-                ),
+            ),
+            Icon(
+              Icons.circle,
+              color: sDate == null ? Colors.grey : colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsetsDirectional.only(start: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                getTranslated(context, 'ORDER_SHIPPED')!,
+                style: TextStyle(fontSize: 8),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                sDate ?? " ",
+                style: TextStyle(fontSize: 8),
               ),
             ],
-          )
+          ),
+        ),
+      ],
+    )
         : sDate == null
-            ? Container()
-            : Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        height: 30,
-                        child: VerticalDivider(
-                          thickness: 2,
-                          color: colors.primary,
-                        ),
-                      ),
-                      Icon(
-                        Icons.circle,
-                        color: colors.primary,
-                        size: 15,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: const EdgeInsetsDirectional.only(start: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          getTranslated(context, 'ORDER_SHIPPED')!,
-                          style: TextStyle(fontSize: 8),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          sDate,
-                          style: TextStyle(fontSize: 8),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
+        ? Container()
+        : Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 30,
+              child: VerticalDivider(
+                thickness: 2,
+                color: colors.primary,
+              ),
+            ),
+            Icon(
+              Icons.circle,
+              color: colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsetsDirectional.only(start: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                getTranslated(context, 'ORDER_SHIPPED')!,
+                style: TextStyle(fontSize: 8),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                sDate,
+                style: TextStyle(fontSize: 8),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   getDelivered(String? dDate, String? cDate) {
     return cDate == null
         ? Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 30,
-                    child: VerticalDivider(
-                      thickness: 2,
-                      color: dDate == null ? Colors.grey : colors.primary,
-                    ),
-                  ),
-                  Icon(
-                    Icons.circle,
-                    color: dDate == null ? Colors.grey : colors.primary,
-                    size: 15,
-                  ),
-                ],
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 30,
+              child: VerticalDivider(
+                thickness: 2,
+                color: dDate == null ? Colors.grey : colors.primary,
               ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(start: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getTranslated(context, 'ORDER_DELIVERED')!,
-                      style: TextStyle(fontSize: 8),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      dDate ?? " ",
-                      style: TextStyle(fontSize: 8),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+            ),
+            Icon(
+              Icons.circle,
+              color: dDate == null ? Colors.grey : colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsetsDirectional.only(start: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                getTranslated(context, 'ORDER_DELIVERED')!,
+                style: TextStyle(fontSize: 8),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                dDate ?? " ",
+                style: TextStyle(fontSize: 8),
+                textAlign: TextAlign.center,
               ),
             ],
-          )
+          ),
+        ),
+      ],
+    )
         : Container();
   }
 
   getCanceled(String? cDate) {
     return cDate != null
         ? Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 30,
-                    child: VerticalDivider(
-                      thickness: 2,
-                      color: colors.primary,
-                    ),
-                  ),
-                  Icon(
-                    Icons.cancel_rounded,
-                    color: colors.primary,
-                    size: 15,
-                  ),
-                ],
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 30,
+              child: VerticalDivider(
+                thickness: 2,
+                color: colors.primary,
               ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(start: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getTranslated(context, 'ORDER_CANCLED')!,
-                      style: TextStyle(fontSize: 8),
-                    ),
-                    Text(
-                      cDate,
-                      style: TextStyle(fontSize: 8),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+            ),
+            Icon(
+              Icons.cancel_rounded,
+              color: colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+          margin: const EdgeInsetsDirectional.only(start: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                getTranslated(context, 'ORDER_CANCLED')!,
+                style: TextStyle(fontSize: 8),
+              ),
+              Text(
+                cDate,
+                style: TextStyle(fontSize: 8),
+                textAlign: TextAlign.center,
               ),
             ],
-          )
+          ),
+        ),
+      ],
+    )
         : Container();
   }
 
   getReturned(OrderItem item, String? rDate, OrderModel model) {
     return item.listStatus!.contains(RETURNED)
         ? Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    height: 30,
-                    child: VerticalDivider(
-                      thickness: 2,
-                      color: colors.primary,
-                    ),
-                  ),
-                  Icon(
-                    Icons.cancel_rounded,
-                    color: colors.primary,
-                    size: 15,
-                  ),
-                ],
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Column(
+          children: [
+            Container(
+              height: 30,
+              child: VerticalDivider(
+                thickness: 2,
+                color: colors.primary,
               ),
-              Container(
-                  margin: const EdgeInsetsDirectional.only(start: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        getTranslated(context, 'ORDER_RETURNED')!,
-                        style: TextStyle(fontSize: 8),
-                      ),
-                      Text(
-                        rDate ?? " ",
-                        style: TextStyle(fontSize: 8),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  )),
-            ],
-          )
+            ),
+            Icon(
+              Icons.cancel_rounded,
+              color: colors.primary,
+              size: 15,
+            ),
+          ],
+        ),
+        Container(
+            margin: const EdgeInsetsDirectional.only(start: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  getTranslated(context, 'ORDER_RETURNED')!,
+                  style: TextStyle(fontSize: 8),
+                ),
+                Text(
+                  rDate ?? " ",
+                  style: TextStyle(fontSize: 8),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            )),
+      ],
+    )
         : Container();
   }
 
@@ -3851,12 +3854,20 @@ class StateOrder extends State<OrderDetail>
             ),
             title: Text(
               getTranslated(context, 'DWNLD_INVOICE')!,
-              style: Theme.of(context).textTheme.subtitle2!.copyWith(color: Theme.of(context).colorScheme.lightBlack),
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2!
+                  .copyWith(color: Theme.of(context).colorScheme.lightBlack),
             ),
           ),
           onTap: () async {
-            print("anjali++++++++++++");
-            var status = await Permission.storage.request();
+            final plugin = DeviceInfoPlugin();
+            final android = await plugin.androidInfo;
+            print("++++++++++++");
+            var status = android.version.sdkInt < 33
+                ? await Permission.storage.request()
+                : PermissionStatus.granted;
+            //await Permission.storage.request();
             print("++++++++++++${status}");
             if (status == PermissionStatus.granted) {
               if (mounted) {
@@ -3871,7 +3882,7 @@ class StateOrder extends State<OrderDetail>
                 targetPath = target.path.toString();
               } else {
                 var downloadsDirectory =
-                    await DownloadsPathProvider.downloadsDirectory;
+                await DownloadsPathProvider.downloadsDirectory;
                 targetPath = downloadsDirectory!.path.toString();
               }
 
@@ -3879,14 +3890,14 @@ class StateOrder extends State<OrderDetail>
               var generatedPdfFile, filePath;
               try {
                 generatedPdfFile =
-                    await FlutterHtmlToPdf.convertFromHtmlContent(
-                        widget.model!.invoice!, targetPath, targetFileName);
+                await FlutterHtmlToPdf.convertFromHtmlContent(
+                    widget.model!.invoice!, targetPath, targetFileName);
                 filePath = generatedPdfFile.path;
               } on Exception {
                 //  filePath = targetPath + "/" + targetFileName + ".html";
                 generatedPdfFile =
-                    await FlutterHtmlToPdf.convertFromHtmlContent(
-                        widget.model!.invoice!, targetPath, targetFileName);
+                await FlutterHtmlToPdf.convertFromHtmlContent(
+                    widget.model!.invoice!, targetPath, targetFileName);
                 filePath = generatedPdfFile.path;
               }
 
@@ -3953,7 +3964,7 @@ class StateOrder extends State<OrderDetail>
                 targetPath = target.path.toString();
               } else {
                 var downloadsDirectory =
-                    await DownloadsPathProvider.downloadsDirectory;
+                await DownloadsPathProvider.downloadsDirectory;
                 targetPath = downloadsDirectory!.path.toString();
                 print('___________${targetPath}__________');
               }
@@ -3962,14 +3973,14 @@ class StateOrder extends State<OrderDetail>
               var generatedPdfFile, filePath;
               try {
                 generatedPdfFile =
-                    await FlutterHtmlToPdf.convertFromHtmlContent(
-                        widget.model!.invoice!, targetPath, targetFileName);
+                await FlutterHtmlToPdf.convertFromHtmlContent(
+                    widget.model!.invoice!, targetPath, targetFileName);
                 filePath = generatedPdfFile.path;
               } on Exception {
                 //  filePath = targetPath + "/" + targetFileName + ".html";
                 generatedPdfFile =
-                    await FlutterHtmlToPdf.convertFromHtmlContent(
-                        widget.model!.invoice!, targetPath, targetFileName);
+                await FlutterHtmlToPdf.convertFromHtmlContent(
+                    widget.model!.invoice!, targetPath, targetFileName);
                 filePath = generatedPdfFile.path;
               }
 
@@ -4106,16 +4117,16 @@ class StateOrder extends State<OrderDetail>
             //     : Container(),
             model.delDate != null && model.delDate!.isNotEmpty
                 ? Card(
-                    elevation: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "${getTranslated(context, 'PREFER_DATE_TIME')!}: ${model.delDate!} - ${model.delTime!}",
-                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                            color: Theme.of(context).colorScheme.lightBlack2),
-                      ),
-                    ),
-                  )
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text(
+                  "${getTranslated(context, 'PREFER_DATE_TIME')!}: ${model.delDate!} - ${model.delTime!}",
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.lightBlack2),
+                ),
+              ),
+            )
                 : Container(),
 
             bankTransfer(model),
@@ -4123,46 +4134,46 @@ class StateOrder extends State<OrderDetail>
             // downloadInvoice(),
             downloadInvoice(),
             shippingDetails(),
-            widget.model?.itemList?.first.deliveryBoyNumber==''
+            widget.model?.itemList?.first.deliveryBoyNumber == ''
                 ? SizedBox.shrink()
                 : Card(
-                    elevation: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                              padding: EdgeInsetsDirectional.only(
-                                  start: 15.0, end: 15.0),
-                              child: Text('Driver Details',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2!
-                                      .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .fontColor,
-                                          fontWeight: FontWeight.bold))),
-                          Divider(
-                            color: Theme.of(context).colorScheme.lightBlack,
-                          ),
-                          Padding(
-                              padding: EdgeInsetsDirectional.only(
-                                  start: 15.0, end: 15.0),
-                              child: Text(
-                                'Name : ${widget.model!.itemList!.first.deliveryBoyName!}',
-                              )),
-                          Padding(
-                              padding: EdgeInsetsDirectional.only(
-                                  start: 15.0, end: 15.0),
-                              child: Text(
-                                'Phone : ${widget.model!.itemList!.first.deliveryBoyNumber!}',
-                              )),
-                        ],
-                      ),
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: EdgeInsetsDirectional.only(
+                            start: 15.0, end: 15.0),
+                        child: Text('Driver Details',
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2!
+                                .copyWith(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .fontColor,
+                                fontWeight: FontWeight.bold))),
+                    Divider(
+                      color: Theme.of(context).colorScheme.lightBlack,
                     ),
-                  ),
+                    Padding(
+                        padding: EdgeInsetsDirectional.only(
+                            start: 15.0, end: 15.0),
+                        child: Text(
+                          'Name : ${widget.model!.itemList!.first.deliveryBoyName!}',
+                        )),
+                    Padding(
+                        padding: EdgeInsetsDirectional.only(
+                            start: 15.0, end: 15.0),
+                        child: Text(
+                          'Phone : ${widget.model!.itemList!.first.deliveryBoyNumber!}',
+                        )),
+                  ],
+                ),
+              ),
+            ),
             priceDetails(),
           ],
         ),
@@ -4173,101 +4184,101 @@ class StateOrder extends State<OrderDetail>
   bankTransfer(OrderModel model) {
     return model.payMethod == "Bank Transfer"
         ? Card(
-            elevation: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+      elevation: 0,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  getTranslated(context, 'BANKRECEIPT')!,
+                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                      color: Theme.of(context).colorScheme.lightBlack),
+                ),
+                Container(
+                  height: 30,
+                  child: IconButton(
+                      icon: Icon(
+                        Icons.add_photo_alternate,
+                        color: colors.primary,
+                        size: 20.0,
+                      ),
+                      onPressed: () {
+                        _imgFromGallery();
+                      }),
+                ),
+              ],
+            ),
+            model.attachList!.length > 0 ? bankProof(model) : Container(),
+            Container(
+              padding: EdgeInsetsDirectional.only(
+                  start: 20.0, end: 20.0, top: 5),
+              height: files.length > 0 ? 180 : 0,
+              child: Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        getTranslated(context, 'BANKRECEIPT')!,
-                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                            color: Theme.of(context).colorScheme.lightBlack),
-                      ),
-                      Container(
-                        height: 30,
-                        child: IconButton(
-                            icon: Icon(
-                              Icons.add_photo_alternate,
-                              color: colors.primary,
-                              size: 20.0,
+                  Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: files.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, i) {
+                          return InkWell(
+                            child: Stack(
+                              alignment: AlignmentDirectional.topEnd,
+                              children: [
+                                Image.file(
+                                  files[i],
+                                  width: 180,
+                                  height: 180,
+                                ),
+                                Container(
+                                    color:
+                                    Theme.of(context).colorScheme.black26,
+                                    child: Icon(
+                                      Icons.clear,
+                                      size: 15,
+                                    ))
+                              ],
                             ),
-                            onPressed: () {
-                              _imgFromGallery();
-                            }),
+                            onTap: () {
+                              if (mounted) {
+                                setState(() {
+                                  files.removeAt(i);
+                                });
+                              }
+                            },
+                          );
+                        },
+                      )),
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 2),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.lightWhite,
+                          borderRadius: BorderRadius.all(
+                              const Radius.circular(4.0))),
+                      child: Text(
+                        getTranslated(context, 'SUBMIT_LBL')!,
+                        style: TextStyle(
+                            color:
+                            Theme.of(context).colorScheme.fontColor),
                       ),
-                    ],
-                  ),
-                  model.attachList!.length > 0 ? bankProof(model) : Container(),
-                  Container(
-                    padding: EdgeInsetsDirectional.only(
-                        start: 20.0, end: 20.0, top: 5),
-                    height: files.length > 0 ? 180 : 0,
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: files.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, i) {
-                            return InkWell(
-                              child: Stack(
-                                alignment: AlignmentDirectional.topEnd,
-                                children: [
-                                  Image.file(
-                                    files[i],
-                                    width: 180,
-                                    height: 180,
-                                  ),
-                                  Container(
-                                      color:
-                                          Theme.of(context).colorScheme.black26,
-                                      child: Icon(
-                                        Icons.clear,
-                                        size: 15,
-                                      ))
-                                ],
-                              ),
-                              onTap: () {
-                                if (mounted) {
-                                  setState(() {
-                                    files.removeAt(i);
-                                  });
-                                }
-                              },
-                            );
-                          },
-                        )),
-                        InkWell(
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 2),
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.lightWhite,
-                                borderRadius: BorderRadius.all(
-                                    const Radius.circular(4.0))),
-                            child: Text(
-                              getTranslated(context, 'SUBMIT_LBL')!,
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.fontColor),
-                            ),
-                          ),
-                          onTap: () {
-                            sendBankProof();
-                          },
-                        ),
-                      ],
                     ),
+                    onTap: () {
+                      sendBankProof();
+                    },
                   ),
                 ],
               ),
             ),
-          )
+          ],
+        ),
+      ),
+    )
         : Container();
   }
 
@@ -4407,7 +4418,7 @@ class StateOrder extends State<OrderDetail>
             hintText: getTranslated(context, 'REVIEW_HINT_LBL'),
             hintStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
                 color:
-                    Theme.of(context).colorScheme.lightBlack2.withOpacity(0.7)),
+                Theme.of(context).colorScheme.lightBlack2.withOpacity(0.7)),
           ),
         ));
   }
@@ -4415,77 +4426,77 @@ class StateOrder extends State<OrderDetail>
   Widget getImageField() {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setModalState) {
-      return Container(
-        padding:
+          return Container(
+            padding:
             const EdgeInsetsDirectional.only(start: 20.0, end: 20.0, top: 5),
-        height: 100,
-        child: Row(
-          children: [
-            Padding(
-              padding:
+            height: 100,
+            child: Row(
+              children: [
+                Padding(
+                  padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: colors.primary,
-                        borderRadius: BorderRadius.circular(50.0)),
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.camera_alt,
-                          color: Theme.of(context).colorScheme.white,
-                          size: 25.0,
-                        ),
-                        onPressed: () {
-                          _reviewImgFromGallery(setModalState);
-                        }),
-                  ),
-                  Text(
-                    getTranslated(context, 'ADD_YOUR_PHOTOS')!,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.lightBlack,
-                        fontSize: 11),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-                child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: reviewPhotos.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, i) {
-                return InkWell(
-                  child: Stack(
-                    alignment: AlignmentDirectional.topEnd,
+                  child: Column(
                     children: [
-                      Image.file(
-                        reviewPhotos[i],
-                        width: 100,
-                        height: 100,
-                      ),
                       Container(
-                          color: Theme.of(context).colorScheme.black26,
-                          child: const Icon(
-                            Icons.clear,
-                            size: 15,
-                          ))
+                        decoration: BoxDecoration(
+                            color: colors.primary,
+                            borderRadius: BorderRadius.circular(50.0)),
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.camera_alt,
+                              color: Theme.of(context).colorScheme.white,
+                              size: 25.0,
+                            ),
+                            onPressed: () {
+                              _reviewImgFromGallery(setModalState);
+                            }),
+                      ),
+                      Text(
+                        getTranslated(context, 'ADD_YOUR_PHOTOS')!,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.lightBlack,
+                            fontSize: 11),
+                      )
                     ],
                   ),
-                  onTap: () {
-                    if (mounted) {
-                      setModalState(() {
-                        reviewPhotos.removeAt(i);
-                      });
-                    }
-                  },
-                );
-              },
-            )),
-          ],
-        ),
-      );
-    });
+                ),
+                Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: reviewPhotos.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, i) {
+                        return InkWell(
+                          child: Stack(
+                            alignment: AlignmentDirectional.topEnd,
+                            children: [
+                              Image.file(
+                                reviewPhotos[i],
+                                width: 100,
+                                height: 100,
+                              ),
+                              Container(
+                                  color: Theme.of(context).colorScheme.black26,
+                                  child: const Icon(
+                                    Icons.clear,
+                                    size: 15,
+                                  ))
+                            ],
+                          ),
+                          onTap: () {
+                            if (mounted) {
+                              setModalState(() {
+                                reviewPhotos.removeAt(i);
+                              });
+                            }
+                          },
+                        );
+                      },
+                    )),
+              ],
+            ),
+          );
+        });
   }
 
   void _reviewImgFromGallery(StateSetter setModalState) async {
@@ -4508,7 +4519,7 @@ class StateOrder extends State<OrderDetail>
         Expanded(
           child: Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
+            const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
             child: MaterialButton(
               height: 45.0,
               textColor: Theme.of(context).colorScheme.white,
@@ -4536,8 +4547,8 @@ class StateOrder extends State<OrderDetail>
   }
 
   Text getHeading(
-    String title,
-  ) {
+      String title,
+      ) {
     return Text(
       getTranslated(context, title)!,
       style: Theme.of(context)
@@ -4628,10 +4639,10 @@ class StateOrder extends State<OrderDetail>
             ),
             model.otp != null && model.otp!.isNotEmpty && model.otp != "0"
                 ? Text(
-                    "${getTranslated(context, "OTP")!} - ${model.otp}",
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.lightBlack2),
-                  )
+              "${getTranslated(context, "OTP")!} - ${model.otp}",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.lightBlack2),
+            )
                 : Container(),
           ],
         ),
@@ -4653,13 +4664,15 @@ class StateOrder extends State<OrderDetail>
     var headers = {
       'Cookie': 'ci_session=801055ca02826afc0217b4466b3f924825c3fc39'
     };
+    int masterCategoryId = context.read<HomeProvider>().masterCategory;
     var request =
-        http.MultipartRequest('POST', Uri.parse('${baseUrl}manage_cart'));
+    http.MultipartRequest('POST', Uri.parse('${baseUrl}manage_cart'));
     request.fields.addAll({
       'user_id': CUR_USERID.toString(),
       'product_variant_id': variatid.toString(),
       'qty': '1',
-      'seller_id': seller_id
+      'seller_id': seller_id,
+      MASTER_TAB: masterCategoryId.toString()
     });
 
     request.headers.addAll(headers);

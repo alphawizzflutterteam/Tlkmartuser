@@ -1044,6 +1044,16 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
         ));
   }
 
+  // otpText() {
+  //   return Padding(
+  //       padding: EdgeInsetsDirectional.only(top: 30.0, start: 20.0, end: 20.0),
+  //       child: Center(
+  //         child: Text(getTranslated(context, 'SENT_VERIFY_CODE_TO_NO_LBL')!,
+  //             style: Theme.of(context).textTheme.subtitle2!.copyWith(
+  //                 color: Theme.of(context).colorScheme.fontColor,
+  //                 fontWeight: FontWeight.normal)),
+  //       ));
+  // }
   otpText() {
     return Padding(
         padding: EdgeInsetsDirectional.only(top: 30.0, start: 20.0, end: 20.0),
@@ -1054,6 +1064,8 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
                   fontWeight: FontWeight.normal)),
         ));
   }
+
+
 
   mobText() {
     return Padding(
@@ -1203,7 +1215,7 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
                   Image.asset('assets/images/Login.png'),
                   Padding(
                     padding: const EdgeInsets.only(top: 150, left: 15),
-                    child: Image.asset('assets/images/titleicon.png'),
+                    child: Image.asset('assets/images/splash1.png',height: 50,width: 180,),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 23),
@@ -1243,14 +1255,32 @@ class _MobileOTPState extends State<VerifyOtp> with TickerProviderStateMixin {
             SizedBox(
               height: 10,
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 25),
+            //   child: Text(
+            //     'Enter the OTP sent to +91 9556654328',
+            //     style: TextStyle(color: Colors.black.withOpacity(0.5)),
+            //   ),
+            // ),
+    Padding(
+    padding: EdgeInsetsDirectional.only(top: 30.0, start: 20.0, end: 20.0),
+    child: Center(
+    child: Text(getTranslated(context, 'SENT_VERIFY_CODE_TO_NO_LBL')!,
+    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+    color: Theme.of(context).colorScheme.fontColor,
+    fontWeight: FontWeight.normal)),
+    )
+    ),
             Padding(
-              padding: const EdgeInsets.only(left: 25),
-              child: Text(
-                'Enter the OTP sent to +91 9556654328',
-                style: TextStyle(color: Colors.black.withOpacity(0.5)),
+              padding: EdgeInsetsDirectional.only(
+                  bottom: 10.0, start: 20.0, end: 20.0, top: 10.0),
+              child: Center(
+                child: Text("+${widget.countryCode}-${widget.mobileNumber}",
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        color: Theme.of(context).colorScheme.fontColor,
+                        fontWeight: FontWeight.normal)),
               ),
             ),
-
             OTPText(),
             SizedBox(
               height: 25,

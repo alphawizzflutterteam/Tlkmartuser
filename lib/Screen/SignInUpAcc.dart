@@ -42,8 +42,8 @@ class _SignInUpAccState extends State<SignInUpAcc> {
       padding: EdgeInsetsDirectional.only(top: 10.0),
       child: Image.asset(
           'assets/images/titleicon.png',
-        // height: 300,
-        // width: 300,
+        height: 80,
+        width: 300,
         scale: 3,
       ),
     );

@@ -29,9 +29,11 @@ class _AllCategoryState extends State<AllCategory> {
   }
 
   Future<void> getCat() async {
+    int masterCategoryId = context.read<HomeProvider>().masterCategory;
     await Future.delayed(Duration.zero);
     Map parameter = {
       CAT_FILTER: "false",
+      MASTER_TAB: masterCategoryId.toString()
     };
     apiBaseHelper.postAPICall(getCatApi, parameter).then((getdata) {
       bool error = getdata["error"];
@@ -42,10 +44,7 @@ class _AllCategoryState extends State<AllCategory> {
         var data = getdata["data"];
         print("CATEGORY PARAMETER PRINT HERE${getCatApi.toString()}");
         print(parameter.toString());
-
-        catList =
-            (data as List).map((data) => new Product.fromCat(data)).toList();
-
+        catList = (data as List).map((data) => new Product.fromCat(data)).toList();
         if (getdata.containsKey("popular_categories")) {
           var data = getdata["popular_categories"];
           popularList =

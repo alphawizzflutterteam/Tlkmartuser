@@ -84,6 +84,7 @@ dependencies:
   flutter_localization: ^0.1.7
   easy_sticky_header: ^1.1.1
   curved_labeled_navigation_bar: ^2.0.2
+  device_info_plus: ^9.1.2
 
 
 

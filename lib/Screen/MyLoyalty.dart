@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart';
+import 'package:tlkmartuser/Screen/HomePage.dart';
 import '../Helper/AppBtn.dart';
 import '../Helper/Color.dart';
 import '../Helper/Constant.dart';
@@ -13,7 +15,8 @@ import '../Model/Transaction_Model.dart';
 
 class MyLoyalityHistoryWidget extends StatefulWidget {
   @override
-  _MyLoyalityHistoryWidgetState createState() => _MyLoyalityHistoryWidgetState();
+  _MyLoyalityHistoryWidgetState createState() =>
+      _MyLoyalityHistoryWidgetState();
 }
 
 class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
@@ -24,12 +27,16 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
   int total = 0;
   bool isLoadingmore = true;
   bool _isLoading = true;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Animation? buttonSqueezeanimation;
   AnimationController? buttonController;
   ScrollController controller = new ScrollController();
   List<TransactionModel> tempList = [];
-
+  StateSetter? dialogState;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  TextEditingController amtC = new TextEditingController();
   @override
   void initState() {
     getLoyalty();
@@ -60,75 +67,117 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(child: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * .296,
-            width: double.maxFinite,
-            alignment: Alignment.topLeft,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/Login.png"),
-                fit: BoxFit.contain,
+      body: Container(
+        child: Stack(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * .296,
+              width: double.maxFinite,
+              alignment: Alignment.topLeft,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/Login.png"),
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.1),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: Stack(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 1,
+                          child: SvgPicture.asset(
+                            'assets/images/Loyalty.svg',
+                            fit: BoxFit.fill,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: MediaQuery.of(context).size.height * 0.26,
+                          ),
+                        ),
 
-          ),
-
-          Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.1),
-            child: Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: Stack(
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/Loyalty.svg',
-                        fit: BoxFit.fill,
-
-                      ),
-
-                      Container(
-                        margin: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.08),
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: Column(children: [Text('Coin Balance',style: Theme.of(context).textTheme.headlineSmall,),Text('${CUR_CURRENCY} $total',style: Theme.of(context).textTheme.headlineSmall,)],),
-                      )
-                      // SizedBox(height: 10),
-
-                    ],
+                        Container(
+                          margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.08),
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Column(
+                            children: [
+                              Text(
+                                'Coin Balance',
+                                style:
+                                Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              Text(
+                                '${CUR_CURRENCY} $total',
+                                style:
+                                Theme.of(context).textTheme.headlineSmall,
+                              )
+                            ],
+                          ),
+                        )
+                        // SizedBox(height: 10),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-
-
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                getNormalAppBar("CONIS", context),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * .25,
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text('History',style: Theme.of(context).textTheme.headlineSmall,),
-                ),
-
-                _isNetworkAvail
-                    ? _isLoading
-                    ? shimmer(context)
-                    : showContent()
-                    : noInternet(context),
-              ],
-            ),
-          )
-        ],
-      ),),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  getNormalAppBar("CONIS", context),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .25,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'History',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (total > 0) {
+                              _showDialog();
+                            } else {
+                              setSnackbar('No available coins', context);
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.amber.shade100,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              'Reedem',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  _isNetworkAvail
+                      ? _isLoading
+                      ? shimmer(context)
+                      : showContent()
+                      : noInternet(context),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
     // return SafeArea(
     //   child:
@@ -179,7 +228,6 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
     //     //           : showContent()
     //     //       : noInternet(context),)
 
-
     //           ,],),
     // );
   }
@@ -224,11 +272,10 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
     _isNetworkAvail = await isNetworkAvailable();
     if (_isNetworkAvail) {
       try {
-        var parameter = {
-          "type":"credit",
-          USER_ID: "1087",
-          'transaction_type': "loyality"
-        };
+        var parameter = {"type": "credit", 'transaction_type': "loyality"};
+
+        if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
+        //   if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
         print("loyalty is $parameter");
         Response response =
         await post(getWalTranApi, headers: headers, body: parameter)
@@ -240,7 +287,7 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
           // String msg = getdata["message"];
 
           if (!error) {
-            total = int.parse(getdata["total"]);
+            total = double.parse(getdata["balance"] ?? '0').toInt();
 
             if ((offset) < total) {
               tempList.clear();
@@ -260,7 +307,7 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
             _isLoading = false;
           });
       } on TimeoutException catch (_) {
-        setSnackbar(getTranslated(context, 'somethingMSg')!);
+        setSnackbar(getTranslated(context, 'somethingMSg')!, context);
 
         setState(() {
           _isLoading = false;
@@ -275,17 +322,17 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
     return null;
   }
 
-  setSnackbar(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-      content: new Text(
-        msg,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Theme.of(context).colorScheme.black),
-      ),
-      backgroundColor: Theme.of(context).colorScheme.white,
-      elevation: 1.0,
-    ));
-  }
+  // setSnackbar(String msg) {
+  //   ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+  //     content: new Text(
+  //       msg,
+  //       textAlign: TextAlign.center,
+  //       style: TextStyle(color: Theme.of(context).colorScheme.black),
+  //     ),
+  //     backgroundColor: Theme.of(context).colorScheme.white,
+  //     elevation: 1.0,
+  //   ));
+  // }
 
   showContent() {
     // return Stack(
@@ -373,19 +420,25 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
 
     return tranList.length == 0
         ? Container(
-        height: MediaQuery.of(context).size.height*0.2,
+        height: MediaQuery.of(context).size.height * 0.2,
         child: getNoItem(context))
-        :
-    ListView.builder(
-      shrinkWrap: true,
-      controller: controller,
-      itemCount: 1,//(offset < total) ? tranList.length + 1 : tranList.length,
-      physics: AlwaysScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return (index == tranList.length && isLoadingmore)
-            ? Center(child: CircularProgressIndicator())
-            : listItem(index);
-      },
+        : Expanded(
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _refresh,
+        child: ListView.builder(
+          shrinkWrap: true,
+          controller: controller,
+          itemCount: tranList.length,
+          //       1, //(offset < total) ? tranList.length + 1 : tranList.length,
+          physics: AlwaysScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return (index == tranList.length && isLoadingmore)
+                ? Center(child: CircularProgressIndicator())
+                : listItem(index);
+          },
+        ),
+      ),
     );
   }
 
@@ -491,5 +544,113 @@ class _MyLoyalityHistoryWidgetState extends State<MyLoyalityHistoryWidget>
           });
       }
     }
+  }
+
+  Future _refresh() {
+    return getLoyalty();
+  }
+
+  _showDialog() async {
+    await dialogAnimate(context,
+        StatefulBuilder(builder: (BuildContext context, StateSetter setStater) {
+          dialogState = setStater;
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(0.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20.0, 20.0, 0, 2.0),
+                    child: Text(
+                      'Reedem Coin',
+                      style: Theme.of(this.context)
+                          .textTheme
+                          .subtitle1!
+                          .copyWith(color: Theme.of(context).colorScheme.fontColor),
+                    ),
+                  ),
+                  Divider(color: Theme.of(context).colorScheme.lightBlack),
+                  Form(
+                    key: _formkey,
+                    child: Flexible(
+                      child: SingleChildScrollView(
+                          child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                    padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      validator: (val) => validateField(val!,
+                                          getTranslated(context, 'FIELD_REQUIRED')),
+                                      autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                      style: TextStyle(
+                                        color: Theme.of(context).colorScheme.fontColor,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: getTranslated(context, "AMOUNT"),
+                                        hintStyle: Theme.of(this.context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .lightBlack,
+                                            fontWeight: FontWeight.normal),
+                                      ),
+                                      controller: amtC,
+                                    )),
+                                Divider(),
+                              ])),
+                    ),
+                  )
+                ]),
+            actions: <Widget>[
+              new TextButton(
+                  child: Text(
+                    "Redeem",
+                    style: Theme.of(this.context).textTheme.subtitle2!.copyWith(
+                        color: Theme.of(context).colorScheme.fontColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    final form = _formkey.currentState!;
+                    if (form.validate() && amtC!.text != '0') {
+                      form.save();
+
+                      if (total > int.parse(amtC.text ?? '0')) {
+                        reedenCoinItem(Coin: amtC.text);
+                      } else {
+                        setSnackbar('please enter valid number', context);
+                      }
+                    }
+                  })
+            ],
+          );
+        }));
+  }
+
+  void reedenCoinItem({required String Coin}) {
+    Map<String, String> parameter = {
+      "coin": Coin,
+    };
+    if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
+    apiBaseHelper.postAPICall(convertWalletProduct, parameter).then(
+            (getdata) async {
+          bool error = getdata["error"];
+          String? msg = getdata["message"];
+          if (!error) {
+            setSnackbar(msg!, context);
+          } else {
+            setSnackbar(msg!, context);
+          }
+        }, onError: (error) {
+      setSnackbar(error.toString(), context);
+    });
   }
 }

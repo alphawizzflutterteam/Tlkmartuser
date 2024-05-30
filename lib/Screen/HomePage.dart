@@ -103,6 +103,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     _refresh();
+    isSelectedTab = context.read<HomeProvider>().masterCategory;
     buttonController = new AnimationController(
         duration: new Duration(milliseconds: 2000), vsync: this);
 
@@ -432,13 +433,14 @@ class _HomePageState extends State<HomePage>
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   "For You",
-                  style: TextStyle(
-                      color: Theme.of(context).canvasColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                  // style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  //     color: colors.blackTemp,
+                  // style:
+                  // TextStyle(
+                  //     color: Theme.of(context).canvasColor,
+                  //     fontSize: 16,
                   //     fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: colors.blackTemp,
+                      fontWeight: FontWeight.bold),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -478,7 +480,7 @@ class _HomePageState extends State<HomePage>
                         ? productList.length
                         : productList.length,
                         (index) {
-                      return favProductItem(productList[index]);
+                      return favProductItem(productList[index], true);
                     },
                   )),
             ],
@@ -571,7 +573,7 @@ class _HomePageState extends State<HomePage>
                             ? deviceHeight! * 0.25
                             : deviceHeight! * 0.5,
                         width: deviceWidth! * 0.45,
-                        child: favProductItem(favList[index]));
+                        child: favProductItem(favList[index], false));
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(
@@ -588,7 +590,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget favProductItem(Product product) {
+  Widget favProductItem(Product product, bool forouSection) {
     String? offPer;
     double price = double.parse(product.prVarientList![0].disPrice!);
     if (price == 0) {
@@ -730,6 +732,9 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         onTap: () {
+          if (forouSection) {
+            updateRecentItem(productID: product.id ?? '');
+          }
           Navigator.push(
             context,
             PageRouteBuilder(
@@ -867,7 +872,8 @@ class _HomePageState extends State<HomePage>
                         width: deviceWidth! * 0.45,
                         child: favProductItem(
                             brandList[isSelectedCategory]
-                                .productList![index]),
+                                .productList![index],
+                            false),
                       );
 
                       // InkWell(
@@ -1015,6 +1021,7 @@ class _HomePageState extends State<HomePage>
     context.read<HomeProvider>().setProductLoading(true);
     context.read<HomeProvider>().setBrandLoading(true);
     context.read<HomeProvider>().setDealLoading(true);
+
     //  context.read<HomeProvider>().setMasterTabLoading(true);
     categoryId = '';
     return callApi();
@@ -2232,7 +2239,7 @@ class _HomePageState extends State<HomePage>
       if (CUR_USERID != null) {
         Map parameter = {
           USER_ID: CUR_USERID,
-          //   MASTER_TAB: isSelectedTab.toString()
+          MASTER_TAB: isSelectedTab.toString()
         };
         apiBaseHelper.postAPICall(getFavApi, parameter).then((getdata) {
           bool error = getdata["error"];
@@ -2272,7 +2279,7 @@ class _HomePageState extends State<HomePage>
   }
 
   void getOfferImages() {
-    Map parameter = Map();
+    Map parameter = {MASTER_TAB: isSelectedTab.toString()};
 
     apiBaseHelper.postAPICall(getOfferImageApi, parameter).then((getdata) {
       bool error = getdata["error"];
@@ -2300,7 +2307,7 @@ class _HomePageState extends State<HomePage>
     if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
     // String curPin = context.read<UserProvider>().curPincode;
     // if (curPin != '') parameter[ZIPCODE] = curPin;
-
+    print(parameter);
     apiBaseHelper.postAPICall(getSectionApi, parameter).then((getdata) {
       print(getSectionApi);
       print(parameter);
@@ -2916,7 +2923,7 @@ class _HomePageState extends State<HomePage>
       MASTER_TAB: isSelectedTab.toString()
     };
     print("(----------------)");
-    print("$parms+rupesh");
+    print("$parms+anjali");
 
     apiBaseHelper.postAPICall(getSliderApi, parms).then((getdata) {
       bool error = getdata["error"];
@@ -2924,7 +2931,6 @@ class _HomePageState extends State<HomePage>
       if (!error) {
         var data = getdata["data"];
         print(getSliderApi.toString());
-
         homeSliderList =
             (data as List).map((data) => new Model.fromSlider(data)).toList();
 
@@ -3070,8 +3076,8 @@ class _HomePageState extends State<HomePage>
                 ],
               ),
             ),
-            sliderLoading()
-            //offerImages.length > index ? _getOfferImage(index) : Container(),
+            sliderLoading(),
+            // offerImages.length > index ? _getOfferImage(index) : Container(),
           ],
         ))
             .toList());
@@ -3103,11 +3109,11 @@ class _HomePageState extends State<HomePage>
         sellerList =
             (data as List).map((data) => new Product.fromSeller(data)).toList();
       } else {
-        setSnackbar(msg!, context);
+        // setSnackbar(msg!, context);
       }
       context.read<HomeProvider>().setSellerLoading(false);
     }, onError: (error) {
-      setSnackbar(error.toString(), context);
+      // setSnackbar(error.toString(), context);
       context.read<HomeProvider>().setSellerLoading(false);
     });
   }
@@ -3884,7 +3890,8 @@ class _HomePageState extends State<HomePage>
       // LIMIT: perPage.toString(),
       // OFFSET: offset.toString(),
       TOP_RETAED: top,
-      MASTER_TAB: isSelectedTab.toString()
+      MASTER_TAB: isSelectedTab.toString(),
+      "recent": '1'
     };
 
     if (categoryId != '') {
@@ -3916,7 +3923,7 @@ class _HomePageState extends State<HomePage>
         _currentRangeValues!.end.round().toString() != "0") {
       parameter[MAXPRICE] = _currentRangeValues!.end.round().toString();
     }
-
+    print(parameter);
     apiBaseHelper.postAPICall(getProductApi, parameter).then((getdata) {
       bool error = getdata["error"];
       String? msg = getdata["message"];
@@ -4837,6 +4844,7 @@ class _HomePageState extends State<HomePage>
     Map<String, String> parameter = {
       'brand': brandName,
     };
+
     try {
       var getdata = await apiBaseHelper.postAPICall(getProductApi, parameter);
       bool error = getdata["error"];
@@ -4874,6 +4882,26 @@ class _HomePageState extends State<HomePage>
     }, onError: (error) {
       setSnackbar(error.toString(), context);
       context.read<HomeProvider>().setDealLoading(false);
+    });
+  }
+
+  void updateRecentItem({required String productID}) {
+    Map<String, String> parameter = {
+      MASTER_TAB: isSelectedTab.toString(),
+      PRODUCT_ID: productID
+    };
+    if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID!;
+    apiBaseHelper.postAPICall(updateRecentProduct, parameter).then(
+            (getdata) async {
+          bool error = getdata["error"];
+          String? msg = getdata["message"];
+          if (!error) {
+            setSnackbar(msg!, context);
+          } else {
+            setSnackbar(msg!, context);
+          }
+        }, onError: (error) {
+      setSnackbar(error.toString(), context);
     });
   }
 }

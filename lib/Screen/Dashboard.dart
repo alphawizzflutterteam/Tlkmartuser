@@ -75,9 +75,9 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
     pushNotificationService.initialise();
 
     _tabController.addListener(
-          () {
+      () {
         Future.delayed(Duration(seconds: 0)).then(
-              (value) {
+          (value) {
             if (_tabController.index == 3) {
               if (CUR_USERID == null) {
                 Navigator.push(
@@ -93,7 +93,7 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
         );
 
         setState(
-              () {
+          () {
             selectedIndex = _tabController.index;
           },
         );
@@ -151,8 +151,8 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
 
         // if (CUR_USERID != null) parameter[USER_ID] = CUR_USERID;
         Response response =
-        await post(getProductApi, headers: headers, body: parameter)
-            .timeout(Duration(seconds: timeOut));
+            await post(getProductApi, headers: headers, body: parameter)
+                .timeout(Duration(seconds: timeOut));
 
         var getdata = json.decode(response.body);
         bool error = getdata["error"];
@@ -167,13 +167,13 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
 
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ProductDetail(
-                index: list ? int.parse(id) : index,
-                model: list
-                    ? items[0]
-                    : sectionList[secPos].productList![index],
-                secPos: secPos,
-                list: list,
-              )));
+                    index: list ? int.parse(id) : index,
+                    model: list
+                        ? items[0]
+                        : sectionList[secPos].productList![index],
+                    secPos: secPos,
+                    list: list,
+                  )));
         } else {
           if (msg != "Products Not Found !") setSnackbar(msg, context);
         }
@@ -238,17 +238,22 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
         //       bottomBarPages.length, (index) => bottomBarPages[index]),
         // ),
         extendBody: true,
-        floatingActionButton:selectedIndex==0? FloatingActionButton(
-          shape: StadiumBorder(),
-          backgroundColor: colors.primary,
-          child: Icon(Icons.search,color: Colors.white,),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search()),
-            );
-          },
-        ):null,
+        floatingActionButton: selectedIndex == 0
+            ? FloatingActionButton(
+                shape: StadiumBorder(),
+                backgroundColor: colors.primary,
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Search()),
+                  );
+                },
+              )
+            : null,
         //fragments[_selBottom],
         bottomNavigationBar: _getBottomBar(),
       ),
@@ -269,54 +274,54 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
 
     return AppBar(
       centerTitle: selectedIndex == 0 ? true : false,
-      title:
-      selectedIndex != 0 ?
-      Image.asset(
-        'assets/images/splash1.png',
-        //height: 40,
-        //   width: 200,
-        height: 30,
-        // width: 45,
-      ):
-      //     : Text(
-      //   title!,
-      //   style: TextStyle(
-      //       color: colors.whiteTemp, fontWeight: FontWeight.normal),
-      // ),
-      SizedBox(),
+      title: selectedIndex != 0
+          ? Image.asset(
+              'assets/images/splash1.png',
+              //height: 40,
+              //   width: 200,
+              height: 30,
+              // width: 45,
+            )
+          :
+          //     : Text(
+          //   title!,
+          //   style: TextStyle(
+          //       color: colors.whiteTemp, fontWeight: FontWeight.normal),
+          // ),
+          SizedBox(),
       leading: selectedIndex == 0
           ? InkWell(
-        child: Center(
-            child: SvgPicture.asset(
-              imagePath + "search.svg",
-              height: 20,
-              color: colors.whiteTemp,
-            )),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Search(),
-              ));
-        },
-      )
+              child: Center(
+                  child: SvgPicture.asset(
+                imagePath + "search.svg",
+                height: 20,
+                color: colors.whiteTemp,
+              )),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Search(),
+                    ));
+              },
+            )
           : null,
       actions: <Widget>[
         selectedIndex == 0
             ? Container()
             : IconButton(
-            icon: SvgPicture.asset(
-              imagePath + "search.svg",
-              height: 20,
-              color: colors.whiteTemp,
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Search(),
-                  ));
-            }),
+                icon: SvgPicture.asset(
+                  imagePath + "search.svg",
+                  height: 20,
+                  color: colors.whiteTemp,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Search(),
+                      ));
+                }),
         IconButton(
           icon: SvgPicture.asset(
             imagePath + "desel_notification.svg",
@@ -325,15 +330,15 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
           onPressed: () {
             CUR_USERID != null
                 ? Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NotificationList(),
-                ))
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NotificationList(),
+                    ))
                 : Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Login(),
-                ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Login(),
+                    ));
           },
         ),
         IconButton(
@@ -345,15 +350,15 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
           onPressed: () {
             CUR_USERID != null
                 ? Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Favorite(),
-                ))
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Favorite(),
+                    ))
                 : Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Login(),
-                ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Login(),
+                    ));
           },
         ),
       ],
@@ -376,38 +381,38 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
           CurvedNavigationBarItem(
             child: selectedIndex == 0
                 ? SvgPicture.asset(
-              imagePath + "1Home.svg",
-              color: colors.primary,
-            )
+                    imagePath + "1Home.svg",
+                    color: colors.primary,
+                  )
                 : SvgPicture.asset(
-              imagePath + "1Home.svg",
-              color: colors.primary,
-            ),
+                    imagePath + "1Home.svg",
+                    color: colors.primary,
+                  ),
             label: getTranslated(context, 'HOME_LBL'),
           ),
           CurvedNavigationBarItem(
             child: selectedIndex == 1
                 ? SvgPicture.asset(
-              imagePath + "2Category.svg",
-              color: colors.primary,
-            )
+                    imagePath + "2Category.svg",
+                    color: colors.primary,
+                  )
                 : SvgPicture.asset(
-              imagePath + "2Category.svg",
-              color: colors.primary,
-            ),
+                    imagePath + "2Category.svg",
+                    color: colors.primary,
+                  ),
             label: getTranslated(context, 'category'),
           ),
           CurvedNavigationBarItem(
             child: selectedIndex == 2
                 ? SvgPicture.asset(
-              imagePath + "3Discount.svg",
-              color: colors.primary,
-            )
+                    imagePath + "3Discount.svg",
+                    color: colors.primary,
+                  )
                 : SvgPicture.asset(
-              imagePath + "3Discount.svg",
-              color: colors.primary,
-            ),
-            label:'Offer',
+                    imagePath + "3Discount.svg",
+                    color: colors.primary,
+                  ),
+            label: 'Offer',
           ),
           CurvedNavigationBarItem(
             child: Selector<UserProvider, String>(
@@ -417,39 +422,39 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
                     Center(
                       child: selectedIndex == 3
                           ? SvgPicture.asset(
-                        imagePath + "4Buy.svg",
-                        color: colors.primary,
-                      )
+                              imagePath + "4Buy.svg",
+                              color: colors.primary,
+                            )
                           : SvgPicture.asset(
-                        imagePath + "4Buy.svg",
-                        color: colors.primary,
-                      ),
+                              imagePath + "4Buy.svg",
+                              color: colors.primary,
+                            ),
                     ),
                     (data != null && data.isNotEmpty && data != "0")
                         ? new Positioned.directional(
-                      bottom: selectedIndex == 3 ? 6 : 20,
-                      textDirection: Directionality.of(context),
-                      end: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: colors.primary),
-                        child: new Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(3),
-                            child: new Text(
-                              data,
-                              style: TextStyle(
-                                  fontSize: 7,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .white),
+                            bottom: selectedIndex == 3 ? 6 : 20,
+                            textDirection: Directionality.of(context),
+                            end: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors.primary),
+                              child: new Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(3),
+                                  child: new Text(
+                                    data,
+                                    style: TextStyle(
+                                        fontSize: 7,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .white),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    )
+                          )
                         : Container()
                   ],
                 );
@@ -461,13 +466,13 @@ class _HomePageState extends State<Dashboard> with TickerProviderStateMixin {
           CurvedNavigationBarItem(
             child: selectedIndex == 4
                 ? SvgPicture.asset(
-              imagePath + "2 User.svg",
-              color: colors.primary,
-            )
+                    imagePath + "2 User.svg",
+                    color: colors.primary,
+                  )
                 : SvgPicture.asset(
-              imagePath + "2 User.svg",
-              color: colors.primary,
-            ),
+                    imagePath + "2 User.svg",
+                    color: colors.primary,
+                  ),
             label: getTranslated(context, 'PROFILE'),
           ),
         ],

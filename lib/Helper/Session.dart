@@ -156,7 +156,8 @@ getAppBar(
             ),
       Selector<UserProvider, String>(
         builder: (context, data, child) {
-          return IconButton(
+          return
+            IconButton(
             icon: Stack(
               children: [
                 Center(

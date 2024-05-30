@@ -2079,7 +2079,7 @@ class StateProduct extends State<ProductList> with TickerProviderStateMixin {
             productList[index]
                 .prVarientList![productList[index].selVarient!]
                 .cartCount = qty.toString();
-
+            print("cart count____________> :$data");
             var cart = getdata["cart"];
             List<SectionModel> cartList = (cart as List)
                 .map((cart) => new SectionModel.fromCart(cart))

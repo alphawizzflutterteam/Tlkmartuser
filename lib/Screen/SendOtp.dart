@@ -1133,7 +1133,7 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
                         padding:
                             EdgeInsets.symmetric(vertical: 25, horizontal: 20),
                         child: Image(
-                            image: AssetImage("assets/images/titleicon.png")),
+                            image: AssetImage("assets/images/splash1.png"), height: 50,width: 180,),
                       ),
                     ],
                   ),
@@ -1148,12 +1148,29 @@ class _SendOtpState extends State<SendOtp> with TickerProviderStateMixin {
                           style: TextStyle(
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
-                        Text(
-                          "We have sent the 4 digit verification code",
-                          style: TextStyle(
-                            color: Colors.grey.shade700,
-                          ),
-                        ),
+                        Padding(
+      padding: const EdgeInsets.only(top: 40.0, bottom: 20.0),
+      child: Align(
+      alignment: Alignment.center,
+      child:Text(
+      getTranslated(context, 'SEND_VERIFY_CODE_LBL')!,
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.subtitle2!.copyWith(
+      color: Theme.of(context).colorScheme.fontColor,
+      fontWeight: FontWeight.normal,
+      ),
+      overflow: TextOverflow.ellipsis,
+      softWrap: true,
+      maxLines: 1,
+      ),
+      )
+    ),
+                        // Text(
+                        //   "We have sent the 4 digit verification code",
+                        //   style: TextStyle(
+                        //     color: Colors.grey.shade700,
+                        //   ),
+                        // ),
                         const SizedBox(height: 40),
                         setCodeWithMono(),
                         const SizedBox(height: 30),

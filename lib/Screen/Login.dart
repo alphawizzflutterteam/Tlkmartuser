@@ -1636,11 +1636,15 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
 
         decoration: InputDecoration(
             counterText: '',
-            prefixIcon: Icon(
-              Icons.phone_android,
-              color: Theme.of(context).colorScheme.fontColor,
-              size: 20,
-            ),
+             prefixIcon: ImageIcon(
+            AssetImage('assets/images/Call.png'),
+        color: Theme.of(context).colorScheme.lightBlack,
+      ),
+            // Icon(
+            //   Icons.phone_android,
+            //   color: Theme.of(context).colorScheme.fontColor,
+            //   size: 20,
+            // ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(8),
@@ -1789,11 +1793,15 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
         // ),
 
         decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.lock,
-              color: Theme.of(context).colorScheme.fontColor,
-              size: 20,
+            prefixIcon: ImageIcon(
+              AssetImage('assets/images/Unlock.png'),
+              color: Theme.of(context).colorScheme.lightBlack,
             ),
+            // prefixIcon: Icon(
+            //   Icons.lock,
+            //   color: Theme.of(context).colorScheme.fontColor,
+            //   size: 20,
+            // ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(8),
@@ -1960,7 +1968,7 @@ class _LoginPageState extends State<Login> with TickerProviderStateMixin {
                           padding: EdgeInsets.symmetric(
                               vertical: 25, horizontal: 20),
                           child: Image(
-                              image: AssetImage("assets/images/titleicon.png")),
+                              image: AssetImage("assets/images/splash1.png"), height: 50,width: 180,),
                         )
                       ],
                     ),
